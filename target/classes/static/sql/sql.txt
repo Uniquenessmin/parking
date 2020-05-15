@@ -1,0 +1,131 @@
+/*
+SQLyog Ultimate v8.32 
+MySQL - 8.0.11 : Database - parking
+*********************************************************************
+*/
+
+/*!40101 SET NAMES utf8 */;
+
+/*!40101 SET SQL_MODE=''*/;
+
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`parking` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */;
+
+USE `parking`;
+
+/*Table structure for table `company` */
+
+DROP TABLE IF EXISTS `company`;
+
+CREATE TABLE `company` (
+  `id` varchar(5) NOT NULL COMMENT '物业id',
+  `comname` varchar(20) DEFAULT NULL COMMENT '物业名',
+  `legalman` varchar(10) DEFAULT NULL COMMENT '法人名字',
+  `legalmantel` int(11) DEFAULT NULL COMMENT '法人电话',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `company` */
+
+insert  into `company`(`id`,`comname`,`legalman`,`legalmantel`) values ('C0001','绿色物业','王云',2147483647);
+
+/*Table structure for table `order` */
+
+DROP TABLE IF EXISTS `order`;
+
+CREATE TABLE `order` (
+  `id` int(10) NOT NULL COMMENT '订单号',
+  `userid` int(11) NOT NULL COMMENT '用户id',
+  `recordid` int(10) NOT NULL COMMENT '停车记录id',
+  `fee` decimal(10,0) DEFAULT NULL COMMENT '产生费用',
+  `status` int(2) NOT NULL DEFAULT '1' COMMENT '订单状态 1-进行中 2-已完成 3-其它',
+  `createtime` bigint(20) DEFAULT NULL COMMENT '创建时间',
+  `endtime` bigint(20) DEFAULT NULL COMMENT '完成时间',
+  `paytype` int(2) DEFAULT NULL COMMENT '支付方式 1-微信 2-支付宝',
+  `updatetime` bigint(20) DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `FK_order2` (`recordid`),
+  KEY `FK_order_user` (`userid`),
+  CONSTRAINT `FK_order2` FOREIGN KEY (`recordid`) REFERENCES `record` (`id`),
+  CONSTRAINT `FK_order_user` FOREIGN KEY (`userid`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `order` */
+
+/*Table structure for table `parkings` */
+
+DROP TABLE IF EXISTS `parkings`;
+
+CREATE TABLE `parkings` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '车场id',
+  `name` varchar(20) NOT NULL COMMENT '车场名字',
+  `address` varchar(30) NOT NULL COMMENT '车场地址',
+  `tel` int(11) NOT NULL COMMENT '车场联系电话',
+  `totalparkinglot` int(5) unsigned zerofill DEFAULT NULL COMMENT '车位总数',
+  `leftparkinglot` int(5) unsigned zerofill DEFAULT NULL COMMENT '剩余车位',
+  `charge` decimal(10,0) unsigned zerofill DEFAULT '0000000000' COMMENT '收费价格',
+  `description` varchar(100) DEFAULT NULL COMMENT '描述补充',
+  `freetime` int(5) DEFAULT '0' COMMENT '免费时长',
+  `map` tinyblob COMMENT '地图',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `parkings` */
+
+/*Table structure for table `record` */
+
+DROP TABLE IF EXISTS `record`;
+
+CREATE TABLE `record` (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '停车记录id',
+  `seatid` int(10) DEFAULT NULL COMMENT '停车位置(泊位号）',
+  `createtime` bigint(12) DEFAULT NULL COMMENT '入场时间',
+  `endtime` bigint(12) DEFAULT NULL COMMENT '出场时间',
+  `userid` int(11) NOT NULL COMMENT '用户id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `record` */
+
+/*Table structure for table `seat` */
+
+DROP TABLE IF EXISTS `seat`;
+
+CREATE TABLE `seat` (
+  `id` int(8) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `parkingid` int(10) NOT NULL COMMENT '所在车场的id',
+  `name` varchar(8) NOT NULL COMMENT '泊位序号',
+  `status` int(2) DEFAULT '1' COMMENT '状态 0-禁用 1-无车 2-有车',
+  PRIMARY KEY (`id`),
+  KEY `FK_seat` (`parkingid`),
+  CONSTRAINT `FK_seat` FOREIGN KEY (`parkingid`) REFERENCES `parkings` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `seat` */
+
+/*Table structure for table `user` */
+
+DROP TABLE IF EXISTS `user`;
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户id',
+  `tel` varchar(11) NOT NULL COMMENT '电话（登录账号）',
+  `passwd` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '用户密码',
+  `name` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '用户名字',
+  `platenumber` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '车牌号',
+  `identity` int(1) NOT NULL DEFAULT '1' COMMENT '用户身份 1-车主 2-管理员 3-超级管理员',
+  `comid` varchar(5) DEFAULT NULL COMMENT '物业id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci MIN_ROWS=1;
+
+/*Data for the table `user` */
+
+insert  into `user`(`id`,`tel`,`passwd`,`name`,`platenumber`,`identity`,`comid`) values (1,'13217489796','4QrcOUm6Wau+VuBX8g+IPg==','xxm','LM8888',1,NULL),(2,'18819201998','4QrcOUm6Wau+VuBX8g+IPg==','MIN',NULL,2,'C0001'),(3,'17512359650','4QrcOUm6Wau+VuBX8g+IPg==','snake12','粤AB1111',1,NULL),(6,'14566224555','4QrcOUm6Wau+VuBX8g+IPg==','251','粤A24554',1,NULL),(7,'18819201000','4QrcOUm6Wau+VuBX8g+IPg==','夏尔','粤A11111',1,NULL);
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
