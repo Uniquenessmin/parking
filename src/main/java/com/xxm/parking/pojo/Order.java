@@ -20,4 +20,5 @@ public class Order {
 	private int paytype;
 	private long createtime;
 	private long endtime;
+	private long updatetime;
 }

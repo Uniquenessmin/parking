@@ -16,7 +16,9 @@ public class User {
 	private String passwd;
 	private String tel;
 	private String name;
-	private String platenumber;
-	private int identity;
+	private String platenumber;//车牌号
+	private int identity;//角色
+	String comid;//物业id
+	Company company;
 		
 }
