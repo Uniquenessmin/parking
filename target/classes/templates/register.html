@@ -1,0 +1,1486 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>智能停车-注册</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <script src="JS/jquery-3.4.0.js" type="text/javascript"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!--引入 element-ui 的样式，-->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 必须先引入vue，  后使用element-ui -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <!-- 引入element 的组件库-->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <style type="text/css">
+        * {
+
+            box-sizing: border-box;
+        }
+
+        body {
+            background: url(IMG/bgIMG/reg.jpg);
+            background-size: cover;
+
+        }
+
+        .wrap {
+            width: 100%;
+            height: 100%;
+            padding: 10% 0;
+            position: fixed;
+            opacity: 0.8;
+            background: linear-gradient(to bottom right, #000000, #656565);
+            background: -webkit-linear-gradient(to bottom right, #50a3a2, #53e3a6);
+        }
+
+        .container {
+            width: 60%;
+            margin: 0 auto;
+        }
+
+        .container h1 {
+
+            color: #FFFFFF;
+            font-weight: 500;
+        }
+
+        .to_login {
+            color: #a7c4c9;
+        }
+
+        .text {
+            color: #e2df
+        }
+
+        .bottom {
+            float: none;
+            display: block;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .flex-box {
+            display: flex;
+        }
+
+        .wrap ul {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -20;
+        }
+
+        .wrap ul li {
+            list-style-type: none;
+            display: block;
+            position: absolute;
+            bottom: -120px;
+            width: 15px;
+            height: 15px;
+            z-index: -8;
+            border-radius: 50%;
+            box-shadow: inset -30px -30px 75px rgba(0, 0, 0, .2),
+                inset 0px 0px 5px rgba(0, 0, 0, .5),
+                inset -3px -3px 5px rgba(0, 0, 0, .5),
+                0 0 20px rgba(255, 255, 255, .75);
+            background-color: rgba(255, 255, 255, 0.15);
+            animotion: square 25s infinite;
+            -webkit-animation: square 25s infinite;
+        }
+
+        .wrap ul li:nth-child(1) {
+            left: 0;
+            animation-duration: 10s;
+            -moz-animation-duration: 10s;
+            -o-animation-duration: 10s;
+            -webkit-animation-duration: 10s;
+        }
+
+        .wrap ul li:nth-child(2) {
+            width: 40px;
+            height: 40px;
+            left: 10%;
+            animation-duration: 15s;
+            -moz-animation-duration: 15s;
+            -o-animation-duration: 15s;
+            -webkit-animation-duration: 11s;
+        }
+
+        .wrap ul li:nth-child(3) {
+            left: 20%;
+            width: 25px;
+            height: 25px;
+            animation-duration: 12s;
+            -moz-animation-duration: 12s;
+            -o-animation-duration: 12s;
+            -webkit-animation-duration: 12s;
+        }
+
+        .wrap ul li:nth-child(4) {
+            width: 50px;
+            height: 50px;
+            left: 30%;
+            -webkit-animation-delay: 3s;
+            -moz-animation-delay: 3s;
+            -o-animation-delay: 3s;
+            animation-delay: 3s;
+            animation-duration: 12s;
+            -moz-animation-duration: 12s;
+            -o-animation-duration: 12s;
+            -webkit-animation-duration: 12s;
+        }
+
+        .wrap ul li:nth-child(5) {
+            width: 60px;
+            height: 60px;
+            left: 40%;
+            animation-duration: 10s;
+            -moz-animation-duration: 10s;
+            -o-animation-duration: 10s;
+            -webkit-animation-duration: 10s;
+        }
+
+        .wrap ul li:nth-child(6) {
+            width: 75px;
+            height: 75px;
+            left: 50%;
+            -webkit-animation-delay: 7s;
+            -moz-animation-delay: 7s;
+            -o-animation-delay: 7s;
+            animation-delay: 7s;
+        }
+
+        .wrap ul li:nth-child(7) {
+            left: 60%;
+            width: 30px;
+            height: 30px;
+            animation-duration: 8s;
+            -moz-animation-duration: 8s;
+            -o-animation-duration: 8s;
+            -webkit-animation-duration: 8s;
+        }
+
+        .wrap ul li:nth-child(8) {
+            width: 90px;
+            height: 90px;
+            left: 70%;
+            -webkit-animation-delay: 4s;
+            -moz-animation-delay: 4s;
+            -o-animation-delay: 4s;
+            animation-delay: 4s;
+        }
+
+        .wrap ul li:nth-child(9) {
+            width: 50px;
+            height: 50px;
+            left: 80%;
+            animation-duration: 20s;
+            -moz-animation-duration: 20s;
+            -o-animation-duration: 20s;
+            -webkit-animation-duration: 20s;
+        }
+
+        .wrap ul li:nth-child(10) {
+            width: 75px;
+            height: 75px;
+            left: 90%;
+            -webkit-animation-delay: 6s;
+            -moz-animation-delay: 6s;
+            -o-animation-delay: 6s;
+            animation-delay: 6s;
+            animation-duration: 30s;
+            -moz-animation-duration: 30s;
+            -o-animation-duration: 30s;
+            -webkit-animation-duration: 30s;
+        }
+
+        @keyframes square {
+            0% {
+                -webkit-transform: translateY(0);
+                transform: translateY(0)
+            }
+
+            100% {
+                bottom: 400px;
+                -webkit-transform: translateY(-500);
+                transform: translateY(-500)
+            }
+        }
+
+        @-webkit-keyframes square {
+            0% {
+                -webkit-transform: translateY(0);
+                transform: translateY(0)
+            }
+
+            100% {
+                bottom: 400px;
+                -webkit-transform: translateY(-500);
+                transform: translateY(-500)
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap" id="app">
+        <div class="container">
+            <h1 class="offset-lg-2" style="color: white;  ">Sign up</h1>
+            <div class="container-fluid my-5 py-1 text-light">
+
+                <div class="row py-3 ">
+                    <div class="col-lg-4 offset-lg-1 col-md-7  col-sm-12">
+                        <label for="">昵称</label>
+                        <div class="form-group">
+                            <input type="text" maxlength="10" minlength="1" class="form-control" v-model="name" 
+                                placeholder="只能是中文、字母、数字"
+                                oninput="value=value.replace(/[^\u4e00-\u9fa5_a-zA-Z0-9]{1,10}/g,'')" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row py-3 ">
+                    <div class="col-lg-4 offset-lg-1 col-md-7  col-sm-12">
+                        <label for="">手机号码</label>
+                        <div class="form-group">
+                            <input type="text" maxlength="11" minlength="11" class="form-control" v-model="tel"  
+                                placeholder="请输入11位手机号码" oninput="value=value.replace(/[^\d]/g,'')" required />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row py-3">
+                    <div class="col-lg-4 offset-lg-1 col-md-7  col-sm-12">
+                        <label for="">密码</label>
+                        <div class="form-group ">
+                            <input type="password" minlength="1" maxlength="20" class="form-control" v-model="password" 
+                                placeholder="请输入密码，长度不超过20" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row py-3">
+                    <div class="col-lg-2 offset-lg-1 col-md-2  col-sm-4">
+                        <label for="">地区</label>
+                        <div class="form-group ">
+                            <el-select v-model="value" filterable placeholder="Select">
+                                <el-option v-for="item in options" :key="item.value" :label="item.label"
+                                    :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </div>
+                    </div>
+                    <div class="col-lg-2  col-md-5  col-sm-8">
+                        <label for="">车牌号</label>
+                        <div class="form-group flex-box">
+                            <input type="text" minlength="5" maxlength="5" class="form-control" v-model="platenumber2" 
+                                placeholder="5位车牌号" required @blur="upnum(platenumber2)" @focus="flag = false">
+                            <div style="color: red;" v-if="flag">请输入正确的车牌号</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row py-3">
+                    <div class="col-lg-4 offset-lg-1 col-md-4  col-sm-12">
+                        <button @click='createUser' class="btn btn-success btn-block">注册</button>
+                    </div>
+
+                </div>
+                <div class="row" style="color:red">{{msg}}</div>
+                   <p class="row py-3 offset-lg-1">
+                      <span class="text">Already a member ?</span>
+                        <a href="main" class="to_login"> Go and log in </a>
+                </p>
+            </div>
+
+        </div>
+
+        <ul>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+        </ul>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"
+        type="text/javascript"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"
+        type="text/javascript"></script>
+
+    <script>
+
+        new Vue({
+            el: '#app',
+            data: {
+                state: '',
+                msg: '',
+                name: '',
+                tel: '',
+                password: '',
+                platenumber: '',
+                platenumber2: '',
+                flag: false,
+                user: { id: '', tel: '', passwd: '', name: '', platenumber: '', identity: '' },
+                value: '粤A',
+                options: [
+                    {
+                        value: '鄂A',
+                        label: '鄂A'
+                    }, {
+                        value: '鄂B',
+                        label: '鄂B'
+                    }, {
+                        value: '鄂C',
+                        label: '鄂C'
+                    }, {
+                        value: '鄂D',
+                        label: '鄂D'
+                    }, {
+                        value: '鄂E',
+                        label: '鄂E'
+                    }, {
+                        value: '鄂F',
+                        label: '鄂F'
+                    }, {
+                        value: '鄂G',
+                        label: '鄂G'
+                    }, {
+                        value: '鄂H',
+                        label: '鄂H'
+                    }, {
+                        value: '鄂J',
+                        label: '鄂J'
+                    }, {
+                        value: '鄂K',
+                        label: '鄂K'
+                    }, {
+                        value: '鄂L',
+                        label: '鄂L'
+                    }, {
+                        value: '鄂M',
+                        label: '鄂M'
+                    }, {
+                        value: '鄂N',
+                        label: '鄂N'
+                    }, {
+                        value: '鄂R',
+                        label: '鄂R'
+                    }, {
+                        value: '鄂P',
+                        label: '鄂P'
+                    }, {
+                        value: '鄂Q',
+                        label: '鄂Q'
+                    }, {
+                        value: '鄂S',
+                        label: '鄂S'
+                    }, {
+                        value: '甘A',
+                        label: '甘A'
+                    }, {
+                        value: '甘B',
+                        label: '甘B'
+                    }, {
+                        value: '甘C',
+                        label: '甘C'
+                    }, {
+                        value: '甘D',
+                        label: '甘D'
+                    }, {
+                        value: '甘E',
+                        label: '甘E'
+                    }, {
+                        value: '甘H',
+                        label: '甘H'
+                    }, {
+                        value: '甘G',
+                        label: '甘G'
+                    }, {
+                        value: '甘L',
+                        label: '甘L'
+                    }, {
+                        value: '甘F',
+                        label: '甘F'
+                    }, {
+                        value: '甘M',
+                        label: '甘M'
+                    }, {
+                        value: '甘J',
+                        label: '甘J'
+                    }, {
+                        value: '甘K',
+                        label: '甘K'
+                    }, {
+                        value: '甘N',
+                        label: '甘N'
+                    }, {
+                        value: '甘P',
+                        label: '甘P'
+                    }, {
+                        value: '冀A',
+                        label: '冀A'
+                    }, {
+                        value: '冀B',
+                        label: '冀B'
+                    }, {
+                        value: '冀C',
+                        label: '冀C'
+                    }, {
+                        value: '冀D',
+                        label: '冀D'
+                    }, {
+                        value: '冀E',
+                        label: '冀E'
+                    }, {
+                        value: '冀F',
+                        label: '冀F'
+                    }, {
+                        value: '冀G',
+                        label: '冀G'
+                    }, {
+                        value: '冀H',
+                        label: '冀H'
+                    }, {
+                        value: '冀J',
+                        label: '冀J'
+                    }, {
+                        value: '冀R',
+                        label: '冀R'
+                    }, {
+                        value: '冀T',
+                        label: '冀T'
+                    }, {
+                        value: '晋A',
+                        label: '晋A'
+                    }, {
+                        value: '晋B',
+                        label: '晋B'
+                    }, {
+                        value: '晋C',
+                        label: '晋C'
+                    }, {
+                        value: '晋D',
+                        label: '晋D'
+                    }, {
+                        value: '晋E',
+                        label: '晋E'
+                    }, {
+                        value: '晋F',
+                        label: '晋F'
+                    }, {
+                        value: '晋K',
+                        label: '晋K'
+                    }, {
+                        value: '晋M',
+                        label: '晋M'
+                    }, {
+                        value: '晋H',
+                        label: '晋H'
+                    }, {
+                        value: '晋L',
+                        label: '晋L'
+                    }, {
+                        value: '晋J',
+                        label: '晋J'
+                    }, {
+                        value: '蒙A',
+                        label: '蒙A'
+                    }, {
+                        value: '蒙B',
+                        label: '蒙B'
+                    }, {
+                        value: '蒙C',
+                        label: '蒙C'
+                    }, {
+                        value: '蒙D',
+                        label: '蒙D'
+                    }, {
+                        value: '蒙E',
+                        label: '蒙E'
+                    }, {
+                        value: '蒙F',
+                        label: '蒙F'
+                    }, {
+                        value: '蒙G',
+                        label: '蒙G'
+                    }, {
+                        value: '蒙H',
+                        label: '蒙H'
+                    }, {
+                        value: '蒙L',
+                        label: '蒙L'
+                    }, {
+                        value: '蒙M',
+                        label: '蒙M'
+                    }, {
+                        value: '蒙J',
+                        label: '蒙J'
+                    }, {
+                        value: '蒙K',
+                        label: '蒙K'
+                    }, {
+                        value: '辽A',
+                        label: '辽A'
+                    }, {
+                        value: '辽B',
+                        label: '辽B'
+                    }, {
+                        value: '辽C',
+                        label: '辽C'
+                    }, {
+                        value: '辽D',
+                        label: '辽D'
+                    }, {
+                        value: '辽E',
+                        label: '辽E'
+                    }, {
+                        value: '辽F',
+                        label: '辽F'
+                    }, {
+                        value: '辽G',
+                        label: '辽G'
+                    }, {
+                        value: '辽H',
+                        label: '辽H'
+                    }, {
+                        value: '辽J',
+                        label: '辽J'
+                    }, {
+                        value: '辽K',
+                        label: '辽K'
+                    }, {
+                        value: '辽L',
+                        label: '辽L'
+                    }, {
+                        value: '辽M',
+                        label: '辽M'
+                    }, {
+                        value: '辽N',
+                        label: '辽N'
+                    }, {
+                        value: '辽P',
+                        label: '辽P'
+                    }, {
+                        value: '吉A',
+                        label: '吉A'
+                    }, {
+                        value: '吉B',
+                        label: '吉B'
+                    }, {
+                        value: '吉C',
+                        label: '吉C'
+                    }, {
+                        value: '吉D',
+                        label: '吉D'
+                    }, {
+                        value: '吉E',
+                        label: '吉E'
+                    }, {
+                        value: '吉F',
+                        label: '吉F'
+                    }, {
+                        value: '吉G',
+                        label: '吉G'
+                    }, {
+                        value: '吉H',
+                        label: '吉H'
+                    }, {
+                        value: '吉J',
+                        label: '吉J'
+                    }, {
+                        value: '黑A',
+                        label: '黑A'
+                    }, {
+                        value: '黑B',
+                        label: '黑B'
+                    }, {
+                        value: '黑C',
+                        label: '黑C'
+                    }, {
+                        value: '黑D',
+                        label: '黑D'
+                    }, {
+                        value: '黑E',
+                        label: '黑E'
+                    }, {
+                        value: '黑F',
+                        label: '黑F'
+                    }, {
+                        value: '黑G',
+                        label: '黑G'
+                    }, {
+                        value: '黑H',
+                        label: '黑H'
+                    }, {
+                        value: '黑J',
+                        label: '黑J'
+                    }, {
+                        value: '黑K',
+                        label: '黑K'
+                    }, {
+                        value: '黑M',
+                        label: '黑M'
+                    }, {
+                        value: '黑N',
+                        label: '黑N'
+                    }, {
+                        value: '黑P',
+                        label: '黑P'
+                    }, {
+                        value: '沪A',
+                        label: '沪A'
+                    }, {
+                        value: '沪B',
+                        label: '沪B'
+                    }, {
+                        value: '沪C',
+                        label: '沪C'
+                    }, {
+                        value: '沪D',
+                        label: '沪D'
+                    }, {
+                        value: '苏A',
+                        label: '苏A'
+                    }, {
+                        value: '苏B',
+                        label: '苏B'
+                    }, {
+                        value: '苏C',
+                        label: '苏C'
+                    }, {
+                        value: '苏D',
+                        label: '苏D'
+                    }, {
+                        value: '苏E',
+                        label: '苏E'
+                    }, {
+                        value: '苏F',
+                        label: '苏F'
+                    }, {
+                        value: '苏G',
+                        label: '苏G'
+                    }, {
+                        value: '苏H',
+                        label: '苏H'
+                    }, {
+                        value: '苏J',
+                        label: '苏J'
+                    }, {
+                        value: '苏K',
+                        label: '苏K'
+                    }, {
+                        value: '苏L',
+                        label: '苏L'
+                    }, {
+                        value: '苏M',
+                        label: '苏M'
+                    }, {
+                        value: '苏N',
+                        label: '苏N'
+                    }, {
+                        value: '浙A',
+                        label: '浙A'
+                    }, {
+                        value: '浙B',
+                        label: '浙B'
+                    }, {
+                        value: '浙C',
+                        label: '浙C'
+                    }, {
+                        value: '浙D',
+                        label: '浙D'
+                    }, {
+                        value: '浙E',
+                        label: '浙E'
+                    }, {
+                        value: '浙F',
+                        label: '浙F'
+                    }, {
+                        value: '浙G',
+                        label: '浙G'
+                    }, {
+                        value: '浙H',
+                        label: '浙H'
+                    }, {
+                        value: '浙J',
+                        label: '浙J'
+                    }, {
+                        value: '浙K',
+                        label: '浙K'
+                    }, {
+                        value: '浙L',
+                        label: '浙L'
+                    }, {
+                        value: '皖A',
+                        label: '皖A'
+                    }, {
+                        value: '皖B',
+                        label: '皖B'
+                    }, {
+                        value: '皖C',
+                        label: '皖C'
+                    }, {
+                        value: '皖D',
+                        label: '皖D'
+                    }, {
+                        value: '皖E',
+                        label: '皖E'
+                    }, {
+                        value: '皖F',
+                        label: '皖F'
+                    }, {
+                        value: '皖G',
+                        label: '皖G'
+                    }, {
+                        value: '皖H',
+                        label: '皖H'
+                    }, {
+                        value: '皖J',
+                        label: '皖J'
+                    }, {
+                        value: '皖K',
+                        label: '皖K'
+                    }, {
+                        value: '皖L',
+                        label: '皖L'
+                    }, {
+                        value: '皖M',
+                        label: '皖M'
+                    }, {
+                        value: '皖N',
+                        label: '皖N'
+                    }, {
+                        value: '皖R',
+                        label: '皖R'
+                    }, {
+                        value: '皖S',
+                        label: '皖S'
+                    }, {
+                        value: '皖P',
+                        label: '皖P'
+                    }, {
+                        value: '闽A',
+                        label: '闽A'
+                    }, {
+                        value: '闽B',
+                        label: '闽B'
+                    }, {
+                        value: '闽C',
+                        label: '闽C'
+                    }, {
+                        value: '闽D',
+                        label: '闽D'
+                    }, {
+                        value: '闽E',
+                        label: '闽E'
+                    }, {
+                        value: '闽F',
+                        label: '闽F'
+                    }, {
+                        value: '闽G',
+                        label: '闽G'
+                    }, {
+                        value: '闽H',
+                        label: '闽H'
+                    }, {
+                        value: '闽J',
+                        label: '闽J'
+                    }, {
+                        value: '赣A',
+                        label: '赣A'
+                    }, {
+                        value: '赣B',
+                        label: '赣B'
+                    }, {
+                        value: '赣C',
+                        label: '赣C'
+                    }, {
+                        value: '赣D',
+                        label: '赣D'
+                    }, {
+                        value: '赣E',
+                        label: '赣E'
+                    }, {
+                        value: '赣F',
+                        label: '赣F'
+                    }, {
+                        value: '赣G',
+                        label: '赣G'
+                    }, {
+                        value: '赣H',
+                        label: '赣H'
+                    }, {
+                        value: '赣J',
+                        label: '赣J'
+                    }, {
+                        value: '赣K',
+                        label: '赣K'
+                    }, {
+                        value: '赣L',
+                        label: '赣L'
+                    }, {
+                        value: '鲁A',
+                        label: '鲁A'
+                    }, {
+                        value: '鲁B',
+                        label: '鲁B'
+                    }, {
+                        value: '鲁C',
+                        label: '鲁C'
+                    }, {
+                        value: '鲁D',
+                        label: '鲁D'
+                    }, {
+                        value: '鲁E',
+                        label: '鲁E'
+                    }, {
+                        value: '鲁F',
+                        label: '鲁F'
+                    }, {
+                        value: '鲁G',
+                        label: '鲁G'
+                    }, {
+                        value: '鲁H',
+                        label: '鲁H'
+                    }, {
+                        value: '鲁J',
+                        label: '鲁J'
+                    }, {
+                        value: '鲁K',
+                        label: '鲁K'
+                    }, {
+                        value: '鲁L',
+                        label: '鲁L'
+                    }, {
+                        value: '鲁M',
+                        label: '鲁M'
+                    }, {
+                        value: '鲁N',
+                        label: '鲁N'
+                    }, {
+                        value: '鲁P',
+                        label: '鲁P'
+                    }, {
+                        value: '鲁Q',
+                        label: '鲁Q'
+                    }, {
+                        value: '鲁R',
+                        label: '鲁R'
+                    }, {
+                        value: '鲁S',
+                        label: '鲁S'
+                    }, {
+                        value: '豫A',
+                        label: '豫A'
+                    }, {
+                        value: '豫B',
+                        label: '豫B'
+                    }, {
+                        value: '豫C',
+                        label: '豫C'
+                    }, {
+                        value: '豫D',
+                        label: '豫D'
+                    }, {
+                        value: '豫E',
+                        label: '豫E'
+                    }, {
+                        value: '豫F',
+                        label: '豫F'
+                    }, {
+                        value: '豫G',
+                        label: '豫G'
+                    }, {
+                        value: '豫H',
+                        label: '豫H'
+                    }, {
+                        value: '豫J',
+                        label: '豫J'
+                    }, {
+                        value: '豫K',
+                        label: '豫K'
+                    }, {
+                        value: '豫L',
+                        label: '豫L'
+                    }, {
+                        value: '豫M',
+                        label: '豫M'
+                    }, {
+                        value: '豫N',
+                        label: '豫N'
+                    }, {
+                        value: '豫P',
+                        label: '豫P'
+                    }, {
+                        value: '豫Q',
+                        label: '豫Q'
+                    }, {
+                        value: '豫R',
+                        label: '豫R'
+                    }, {
+                        value: '豫S',
+                        label: '豫S'
+                    }, {
+                        value: '豫U',
+                        label: '豫U'
+                    }, {
+                        value: '湘A',
+                        label: '湘A'
+                    }, {
+                        value: '湘B',
+                        label: '湘B'
+                    }, {
+                        value: '湘C',
+                        label: '湘C'
+                    }, {
+                        value: '湘D',
+                        label: '湘D'
+                    }, {
+                        value: '湘E',
+                        label: '湘E'
+                    }, {
+                        value: '湘F',
+                        label: '湘F'
+                    }, {
+                        value: '湘G',
+                        label: '湘G'
+                    }, {
+                        value: '湘H',
+                        label: '湘H'
+                    }, {
+                        value: '湘J',
+                        label: '湘J'
+                    }, {
+                        value: '湘K',
+                        label: '湘K'
+                    }, {
+                        value: '湘L',
+                        label: '湘L'
+                    }, {
+                        value: '湘M',
+                        label: '湘M'
+                    }, {
+                        value: '湘N',
+                        label: '湘N'
+                    }, {
+                        value: '湘U',
+                        label: '湘U'
+                    }, {
+                        value: '粤A',
+                        label: '粤A'
+                    }, {
+                        value: '粤B',
+                        label: '粤B'
+                    }, {
+                        value: '粤C',
+                        label: '粤C'
+                    }, {
+                        value: '粤D',
+                        label: '粤D'
+                    }, {
+                        value: '粤E',
+                        label: '粤E'
+                    }, {
+                        value: '粤F',
+                        label: '粤F'
+                    }, {
+                        value: '粤G',
+                        label: '粤G'
+                    }, {
+                        value: '粤H',
+                        label: '粤H'
+                    }, {
+                        value: '粤J',
+                        label: '粤J'
+                    }, {
+                        value: '粤K',
+                        label: '粤K'
+                    }, {
+                        value: '粤L',
+                        label: '粤L'
+                    }, {
+                        value: '粤M',
+                        label: '粤M'
+                    }, {
+                        value: '粤N',
+                        label: '粤N'
+                    }, {
+                        value: '粤P',
+                        label: '粤P'
+                    }, {
+                        value: '粤Q',
+                        label: '粤Q'
+                    }, {
+                        value: '粤R',
+                        label: '粤R'
+                    }, {
+                        value: '粤S',
+                        label: '粤S'
+                    }, {
+                        value: '粤T',
+                        label: '粤T'
+                    }, {
+                        value: '粤U',
+                        label: '粤U'
+                    }, {
+                        value: '粤V',
+                        label: '粤V'
+                    }, {
+                        value: '粤W',
+                        label: '粤W'
+                    }, {
+                        value: '粤X',
+                        label: '粤X'
+                    }, {
+                        value: '粤Y',
+                        label: '粤Y'
+                    }, {
+                        value: '桂A',
+                        label: '桂A'
+                    }, {
+                        value: '桂B',
+                        label: '桂B'
+                    }, {
+                        value: '桂C',
+                        label: '桂C'
+                    }, {
+                        value: '桂D',
+                        label: '桂D'
+                    }, {
+                        value: '桂E',
+                        label: '桂E'
+                    }, {
+                        value: '桂F',
+                        label: '桂F'
+                    }, {
+                        value: '桂G',
+                        label: '桂G'
+                    }, {
+                        value: '桂J',
+                        label: '桂J'
+                    }, {
+                        value: '桂K',
+                        label: '桂K'
+                    }, {
+                        value: '桂L',
+                        label: '桂L'
+                    }, {
+                        value: '桂M',
+                        label: '桂M'
+                    }, {
+                        value: '桂N',
+                        label: '桂N'
+                    }, {
+                        value: '桂P',
+                        label: '桂P'
+                    }, {
+                        value: '桂R',
+                        label: '桂R'
+                    }, {
+                        value: '琼A',
+                        label: '琼A'
+                    }, {
+                        value: '琼B',
+                        label: '琼B'
+                    }, {
+                        value: '琼C',
+                        label: '琼C'
+                    }, {
+                        value: '渝G',
+                        label: '渝G'
+                    }, {
+                        value: '渝A',
+                        label: '渝A'
+                    }, {
+                        value: '渝B',
+                        label: '渝B'
+                    }, {
+                        value: '渝C',
+                        label: '渝C'
+                    }, {
+                        value: '渝F',
+                        label: '渝F'
+                    }, {
+                        value: '渝H',
+                        label: '渝H'
+                    }, {
+                        value: '川A',
+                        label: '川A'
+                    }, {
+                        value: '川B',
+                        label: '川B'
+                    }, {
+                        value: '川C',
+                        label: '川C'
+                    }, {
+                        value: '川D',
+                        label: '川D'
+                    }, {
+                        value: '川E',
+                        label: '川E'
+                    }, {
+                        value: '川F',
+                        label: '川F'
+                    }, {
+                        value: '川H',
+                        label: '川H'
+                    }, {
+                        value: '川J',
+                        label: '川J'
+                    }, {
+                        value: '川K',
+                        label: '川K'
+                    }, {
+                        value: '川L',
+                        label: '川L'
+                    }, {
+                        value: '川M',
+                        label: '川M'
+                    }, {
+                        value: '川Q',
+                        label: '川Q'
+                    }, {
+                        value: '川R',
+                        label: '川R'
+                    }, {
+                        value: '川S',
+                        label: '川S'
+                    }, {
+                        value: '川T',
+                        label: '川T'
+                    }, {
+                        value: '川U',
+                        label: '川U'
+                    }, {
+                        value: '川V',
+                        label: '川V'
+                    }, {
+                        value: '川W',
+                        label: '川W'
+                    }, {
+                        value: '川X',
+                        label: '川X'
+                    }, {
+                        value: '川Y',
+                        label: '川Y'
+                    }, {
+                        value: '川Z',
+                        label: '川Z'
+                    }, {
+                        value: '贵A',
+                        label: '贵A'
+                    }, {
+                        value: '贵B',
+                        label: '贵B'
+                    }, {
+                        value: '贵C',
+                        label: '贵C'
+                    }, {
+                        value: '贵D',
+                        label: '贵D'
+                    }, {
+                        value: '贵E',
+                        label: '贵E'
+                    }, {
+                        value: '贵F',
+                        label: '贵F'
+                    }, {
+                        value: '贵G',
+                        label: '贵G'
+                    }, {
+                        value: '贵H',
+                        label: '贵H'
+                    }, {
+                        value: '贵J',
+                        label: '贵J'
+                    }, {
+                        value: '云A',
+                        label: '云A'
+                    }, {
+                        value: '云B',
+                        label: '云B'
+                    }, {
+                        value: '云C',
+                        label: '云C'
+                    }, {
+                        value: '云D',
+                        label: '云D'
+                    }, {
+                        value: '云E',
+                        label: '云E'
+                    }, {
+                        value: '云F',
+                        label: '云F'
+                    }, {
+                        value: '云G',
+                        label: '云G'
+                    }, {
+                        value: '云H',
+                        label: '云H'
+                    }, {
+                        value: '云J',
+                        label: '云J'
+                    }, {
+                        value: '云M',
+                        label: '云M'
+                    }, {
+                        value: '云N',
+                        label: '云N'
+                    }, {
+                        value: '云L',
+                        label: '云L'
+                    }, {
+                        value: '云P',
+                        label: '云P'
+                    }, {
+                        value: '云Q',
+                        label: '云Q'
+                    }, {
+                        value: '云R',
+                        label: '云R'
+                    }, {
+                        value: '云S',
+                        label: '云S'
+                    }, {
+                        value: '云K',
+                        label: '云K'
+                    }, {
+                        value: '藏A',
+                        label: '藏A'
+                    }, {
+                        value: '藏B',
+                        label: '藏B'
+                    }, {
+                        value: '藏C',
+                        label: '藏C'
+                    }, {
+                        value: '藏D',
+                        label: '藏D'
+                    }, {
+                        value: '藏E',
+                        label: '藏E'
+                    }, {
+                        value: '藏F',
+                        label: '藏F'
+                    }, {
+                        value: '藏G',
+                        label: '藏G'
+                    }, {
+                        value: '陕A',
+                        label: '陕A'
+                    }, {
+                        value: '陕B',
+                        label: '陕B'
+                    }, {
+                        value: '陕C',
+                        label: '陕C'
+                    }, {
+                        value: '陕D',
+                        label: '陕D'
+                    }, {
+                        value: '陕E',
+                        label: '陕E'
+                    }, {
+                        value: '陕F',
+                        label: '陕F'
+                    }, {
+                        value: '陕G',
+                        label: '陕G'
+                    }, {
+                        value: '陕H',
+                        label: '陕H'
+                    }, {
+                        value: '陕J',
+                        label: '陕J'
+                    }, {
+                        value: '陕K',
+                        label: '陕K'
+                    }, {
+                        value: '青A',
+                        label: '青A'
+                    }, {
+                        value: '青B',
+                        label: '青B'
+                    }, {
+                        value: '青C',
+                        label: '青C'
+                    }, {
+                        value: '青D',
+                        label: '青D'
+                    }, {
+                        value: '青E',
+                        label: '青E'
+                    }, {
+                        value: '青F',
+                        label: '青F'
+                    }, {
+                        value: '青G',
+                        label: '青G'
+                    }, {
+                        value: '青H',
+                        label: '青H'
+                    }, {
+                        value: '宁A',
+                        label: '宁A'
+                    }, {
+                        value: '宁B',
+                        label: '宁B'
+                    }, {
+                        value: '宁C',
+                        label: '宁C'
+                    }, {
+                        value: '宁D',
+                        label: '宁D'
+                    }, {
+                        value: '宁E',
+                        label: '宁E'
+                    }, {
+                        value: '新A',
+                        label: '新A'
+                    }, {
+                        value: '新B',
+                        label: '新B'
+                    }, {
+                        value: '新C',
+                        label: '新C'
+                    }, {
+                        value: '新D',
+                        label: '新D'
+                    }, {
+                        value: '新E',
+                        label: '新E'
+                    }, {
+                        value: '新G',
+                        label: '新G'
+                    }, {
+                        value: '新H',
+                        label: '新H'
+                    }, {
+                        value: '新J',
+                        label: '新J'
+                    }, {
+                        value: '新K',
+                        label: '新K'
+                    }, {
+                        value: '新L',
+                        label: '新L'
+                    }, {
+                        value: '新M',
+                        label: '新M'
+                    }, {
+                        value: '新N',
+                        label: '新N'
+                    }, {
+                        value: '新P',
+                        label: '新P'
+                    }, {
+                        value: '新Q',
+                        label: '新Q'
+                    }, {
+                        value: '新R',
+                        label: '新R'
+                    }
+                ],
+            },
+            methods: {
+                upnum(str) {
+                    let reg = /^[A-Z\d]{5}$/
+                    if (!reg.test(str) && this.platenumber2) {
+                        this.flag = true
+                    }
+                    else {
+                        this.flag = false
+                    }
+                    return
+                },
+                createUser: function () {
+                    if (this.tel == '' || this.password == '' || this.platenumber2 == '' || this.name == '') {
+                        this.msg = "请检查信息是否漏填！";
+                    } else {
+                        this.platenumber = this.value + this.platenumber2;
+
+                        axios.post('/register', {
+                            name: this.name,
+                            tel: this.tel,
+                            passwd: this.password,
+                            platenumber:  this.platenumber,
+                            identity: 1
+                        }
+                        )
+                            .then(res => {
+                               
+                                console.log(res.data);
+                                map = res.data;
+                                this.state = map.state;
+                                this.msg = map.msg;
+                                if (this.state == 1) {
+                                    this.user = map.user;
+                                    this.saveStorage;
+                                    if (this.user.identity == 1) {
+                                        //车主
+                                        window.location.href = 'foruser';
+                                    } else if (this.user.identity == 2) {
+                                        //管理员
+                                        window.location.href = 'manager';
+                                    }
+
+                                }
+                            })
+                            .catch(err => {
+                                console.error(err);
+                            })
+                    }
+                },
+                saveStorage: function () {                   
+                    localStorage.setItem("name", this.name);
+                    localStorage.setItem("tel",this.tel);
+                    localStorage.setItem("password", this.password);
+                    localStorage.setItem("platenumber", this.platenumber);
+                    localStorage.setItem("id",this.user.id);
+                }
+
+
+            },
+            computed: {
+
+            },
+            mounted() {
+                console.log(this.flag)
+
+            },
+        })
+
+    </script>
+
+
+</body>
+
+</html>

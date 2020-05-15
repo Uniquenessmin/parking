@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能停车</title>
+</head>
+
+<body>
+    车主登录
+    <a href="myinfo"> 个人资料 </a>
+</body>
+<script>
+    var name = localStorage.getItem("name");
+    var tel = localStorage.getItem("tel");
+    var platenumber = localStorage.getItem("platenumber");
+    var id = localStorage.getItem("id");
+   
+    var value = platenumber.substr(0, 2);
+    var pnumber2 = platenumber.substr(2, 5);
+    console.log(id);
+    console.log(name);
+    console.log(tel);
+    console.log(value);
+    console.log(pnumber2);
+</script>
+
+</html>
