@@ -6,24 +6,162 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>智能停车</title>
 </head>
-
 <body>
-    车主登录
-    <a href="myinfo"> 个人资料 </a>
+
+    <div id="app">
+        <!-- Nav tabs 导航栏-->
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+            <a class="navbar-brand " href="/foruser">智能停车平台</a>
+            <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse"
+                data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavId">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/myinfo">个人资料<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/info"></a>
+                    </li>
+                    <!-- Button trigger modal 修改密码对话框 -->
+                    <li class="nav-item">
+                        <a  class="nav-link" data-toggle="modal" data-target="#modelId">修改密码</a>
+                    </li>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+                        aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">修改用户密码</h5>
+                                </div>
+                                <div class="modal-body">
+
+                                    <!-- 旧密码 -->
+                                    <div class="form-group">
+                                        <label for="">旧密码</label>
+                                        <input type="password" class="form-control" v-model="oldpwd">
+                                    </div>
+
+                                    <!-- 新密码 -->
+                                    <div class="form-group">
+                                        <label for="">新密码</label>
+                                        <input type="password" class="form-control" v-model="pwd1">
+                                    </div>
+
+                                    <!-- 再次输入 -->
+                                    <div class="form-group">
+                                        <label for="">再次输入</label>
+                                        <input type="password" class="form-control" v-model="pwd2">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                                    <button type="button" class="btn btn-primary" @click="change()">更改</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </ul>
+                <form class="form-inline my-2 my-lg-0" action="/">
+
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">退出</button>
+                </form>
+            </div>
+        </nav>
+        
+        <!-- 个人信息表单 -->
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                flag: false,
+                oldpwd: '',
+                pwd1: '',
+                pwd2: '',
+                show: '',
+                ss: '',
+                name: '',
+                tel: '',
+                platenumber: '',
+                id: '',
+                value: '',
+                pnumber2: '',
+               },
+            methods: {
+                
+                change: function () {
+                    axios.post('/changpwd', {
+                        oldpwd: this.oldpwd,
+                        pwd1: this.pwd1,
+                        pwd2: this.pwd2
+                    })
+                        .then(res => {
+                            console.log(res.data)
+                            if (res.data == 'erropwd') {
+                                alert('原密码输入错误');
+                            }
+
+                            if (res.data == 'noequal') {
+                                alert('新密码两次不一致');
+                            }
+
+                            if (res.data == 'ok') {
+                                $('#modelId').modal('hide')
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        })
+                },
+ 
+            },
+            computed: {
+
+            },
+            mounted() {
+
+                var name = localStorage.getItem("name");
+                var tel = localStorage.getItem("tel");
+                var platenumber = localStorage.getItem("platenumber");
+                var id = localStorage.getItem("id");
+                this.tel = tel;
+                this.name = name;
+                this.platenumber = platenumber;
+                this.id = id;
+                this.value = platenumber.substr(0, 2);
+                this.pnumber2 = platenumber.substr(2, 5);
+
+            },
+        })        
+    </script>
+
+
 </body>
-<script>
-    var name = localStorage.getItem("name");
-    var tel = localStorage.getItem("tel");
-    var platenumber = localStorage.getItem("platenumber");
-    var id = localStorage.getItem("id");
-   
-    var value = platenumber.substr(0, 2);
-    var pnumber2 = platenumber.substr(2, 5);
-    console.log(id);
-    console.log(name);
-    console.log(tel);
-    console.log(value);
-    console.log(pnumber2);
-</script>
 
 </html>
