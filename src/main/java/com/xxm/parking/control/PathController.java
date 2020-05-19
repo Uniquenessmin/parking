@@ -30,4 +30,9 @@ public class PathController {
 	public String myInfo() {
 		return "myInfo";
 	}
+	
+	@RequestMapping("/parking.html")
+	public String toParkingService() {
+		return "parking";
+	}
 }

@@ -120,7 +120,7 @@ public class UserService {
 		String oldpasswd = message.get("oldpasswd");
 		String newpasswd = message.get("newpasswd");
 		String passwd = userMapper.getpwd(id);
-		if(passwd.equals(oldpasswd)) {
+		if(KeyUtil.encodeByMd5(oldpasswd).equals(passwd)) {
 			//匹配成功，更换密码
 			userMapper.changepwd(id, KeyUtil.encodeByMd5(newpasswd));
 			map.put("state",1);

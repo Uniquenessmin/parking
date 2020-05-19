@@ -40,7 +40,7 @@ public class UserController {
 	}
 	
 	//修改密码
-	@PostMapping("/changepasswd")
+	@PostMapping("/changpwd")
 	public Map<String, Object> changePasswd(@RequestBody HashMap<String,String> reqMap){
 		Map<String, Object> state = userService.changPassword(reqMap);
 		return state;

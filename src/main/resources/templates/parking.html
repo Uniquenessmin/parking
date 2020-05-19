@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>智能停车</title>
-    
+    <title>停车服务</title>
+
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -46,15 +46,15 @@
             text-align: center;
             font-size: 1.2em;
         }
+
         .cen {
             position: unset;
             width: 400px;
-            height: 500px;      
+            height: 500px;
             text-align: center;
             font-size: 1.4em;
-                        
-        }
 
+        }
     </style>
 </head>
 
@@ -83,7 +83,7 @@
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="modal" data-target="#modelId">修改密码</a>
                         </li>
-    
+
                         <!-- Modal -->
                         <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
                             aria-hidden="true">
@@ -93,19 +93,19 @@
                                         <h5 class="modal-title">修改用户密码</h5>
                                     </div>
                                     <div class="modal-body">
-    
+
                                         <!-- 旧密码 -->
                                         <div class="form-group">
                                             <label for="">旧密码</label>
                                             <input type="password" class="form-control" v-model="oldpwd">
                                         </div>
-    
+
                                         <!-- 新密码 -->
                                         <div class="form-group">
                                             <label for="">新密码</label>
                                             <input type="password" class="form-control" v-model="pwd1">
                                         </div>
-    
+
                                         <!-- 再次输入 -->
                                         <div class="form-group">
                                             <label for="">再次输入</label>
@@ -119,10 +119,10 @@
                                 </div>
                             </div>
                         </div>
-    
+
                     </ul>
                     <form class="form-inline my-2 my-lg-0" action="/">
-    
+
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">退出</button>
                     </form>
                 </div>
@@ -130,36 +130,18 @@
         </div>
         <!-- 主体功能栏 -->
         <div>
-            <div style="margin: 20%;"></div>
-            <div class="container can" style="border:2px solid #000;">
-                <div class="row py-10"  >
-                    <div class="col-xs-1-12" style="border:1px solid #000;margin: 5%;margin-left:10%;padding-left: 8%;">
-                        <label >
-                        <span style="border-radius: 50%;    height: 100px;    width:100px;    display: inline-block;    background: #238ff9;      vertical-align: top;">
-                            <span style="display: block;    color: #FFFFFF;    height: 100px;    line-height: 100px;    text-align: center"><a href="/parking.html" style="color: #FFFFFF;">停车服务</a></span>
-                        </span></label>
-                        
-                    </div>
-                    <div class="col-xs-1-12" style="border:1px solid #000;margin: 5%;">
-                        <span style="border-radius: 50%;    height: 100px;    width:100px;    display: inline-block;    background: #238ff9;      vertical-align: top;">
-                            <span style="display: block;    color: #FFFFFF;    height: 100px;    line-height: 100px;    text-align: center"><a href="" style="color: #FFFFFF;">停车指南</a></span>
-                        </span>
-                    </div>
-                    
-                </div>
-                <div  class="row py-10">
-                    <div class="col-xs-1-12" style="border:1px solid #000;margin: 5%;margin-left:10%;padding-left: 8%;">
-                        <span style="border-radius: 50%;    height: 100px;    width:100px;    display: inline-block;    background: #238ff9;      vertical-align: top;">
-                            <span style="display: block;    color: #FFFFFF;    height: 100px;    line-height: 100px;    text-align: center"><a href="" style="color: #FFFFFF;">停车资讯</a></span>
-                        </span>
-                    </div>
-                    <div class="col-xs-1-12" style="border:1px solid #000;margin: 5%;">
-                        <span style="border-radius: 50%;    height: 100px;    width:100px;    display: inline-block;    background: #238ff9;      vertical-align: top;">
-                            <span style="display: block;    color: #FFFFFF;    height: 100px;    line-height: 100px;    text-align: center"><a href="" style="color: #FFFFFF;">设置</a></span>
-                        </span>
-                    </div>
-                    
-                </div>
+            欢迎进入停车服务页面，请选择停车场...
+            <!-- 停车场列表 -->
+            <div>
+                <el-collapse v-model="activeNames" @change="handleChange"  v-for="i in plots" :key="i.id">
+                    <el-collapse-item :title=" i.name +','+ i.address" :name="i.id">
+                        <div>{{i.address}}</div>
+                        <div>{{i.tel}}</div>
+                        <div>{{i.description}}</div>
+                    </el-collapse-item>
+                  
+                </el-collapse>
+
             </div>
         </div>
         <!-- 底部功能栏 -->
@@ -208,33 +190,39 @@
                 id: '',
                 value: '',
                 pnumber2: '',
+                activeNames: ['1'],
+                plots:{},
+                address1:'',
+                name1:'',
+                left:'',
             },
             methods: {
-
+                handleChange: function (val) {
+                    console.log(val);
+                },
                 change: function () {
-                    if(this.pwd1 != this.pwd2){
-                        alert('新密码两次输入不一致');
-                    }else{
-                        axios.post('/changpwd', {
-                            id:this.id,
-                            oldpasswd: this.oldpwd,
-                            newpasswd: this.pwd1,
-                            
-                        })
-                            .then(res => {
-                                console.log(res.data)
-                                if (res.data.state == 2) {
-                                    alert(res.data.msg);
-                                }else{
-                                    alert(res.data.msg);
-                                    $('#modelId').modal('hide')
-                                }
-                            })
-                            .catch(err => {
-                                console.error(err);
-                            });
+                    axios.post('/changpwd', {
+                        oldpwd: this.oldpwd,
+                        pwd1: this.pwd1,
+                        pwd2: this.pwd2
+                    })
+                        .then(res => {
+                            console.log(res.data)
+                            if (res.data == 'erropwd') {
+                                alert('原密码输入错误');
+                            }
 
-                    }
+                            if (res.data == 'noequal') {
+                                alert('新密码两次不一致');
+                            }
+
+                            if (res.data == 'ok') {
+                                $('#modelId').modal('hide')
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        })
                 },
 
             },
@@ -253,6 +241,19 @@
                 this.id = id;
                 this.value = platenumber.substr(0, 2);
                 this.pnumber2 = platenumber.substr(2, 5);
+
+                axios.post('/getPlot', {
+                        address:this.address1,
+                        name:this.name1,
+                        left:this.left
+                    })
+                        .then(res => {
+                            console.log(res.data)
+                            this.plots = res.data;
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        });
 
             },
         })        
