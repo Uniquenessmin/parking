@@ -8,12 +8,15 @@ import com.xxm.parking.control.UserController;
 import com.xxm.parking.mapper.UserMapper;
 import com.xxm.parking.pojo.User;
 import com.xxm.parking.service.UserService;
+import com.xxm.parking.util.KeyUtil;
 
 public class Test {
 
 	public static void main(String[] args) {
 //		login();
-		
+		String a = "1234560000";
+		System.out.println(KeyUtil.encodeByMd5(a));
+		System.out.println(KeyUtil.encodeByMd5(a).length());
 	}
 	public static  void   login() {
 		HashMap<String,String> map = new HashMap<>();
