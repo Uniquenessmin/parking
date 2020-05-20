@@ -1,10 +1,7 @@
 package com.xxm.parking.util;
 
-import java.security.MessageDigest;
-
 import org.springframework.util.DigestUtils;
 
-import sun.misc.BASE64Encoder;
 
 /**
  * 加密工具类

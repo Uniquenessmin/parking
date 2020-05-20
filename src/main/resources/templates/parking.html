@@ -133,14 +133,23 @@
             欢迎进入停车服务页面，请选择停车场...
             <!-- 停车场列表 -->
             <div>
-                <el-collapse v-model="activeNames" @change="handleChange"  v-for="i in plots" :key="i.id">
-                    <el-collapse-item :title=" i.name +','+ i.address" :name="i.id">
-                        <div>{{i.address}}</div>
-                        <div>{{i.tel}}</div>
-                        <div>{{i.description}}</div>
+                <el-collapse   v-model="activeNames"   @change="handleChange" v-for="i in plots.slice((currentPage-1)*pagesize,currentPage*pagesize)" :key="i.id" >
+                    <el-collapse-item :title=" i.name +','+ i.address" :name="i.id" class="minHeight isactive">
+                        <div>{{i.name}}</div>
+                        <div>地址：{{i.address}}</div>
+                        <div>联系电话：{{i.tel}}</div>
+                        <div>收费规则：{{i.description}}</div>
                     </el-collapse-item>
-                  
+
                 </el-collapse>
+                <!-- 分页 -->
+                <div class="block">
+
+                    <el-pagination  @current-change="handleCurrentChange" 
+                        :current-page="currentPage"  :page-size="pagesize"
+                        layout="total,  prev, pager, next" :total="total">
+                    </el-pagination>
+                </div>
 
             </div>
         </div>
@@ -191,15 +200,30 @@
                 value: '',
                 pnumber2: '',
                 activeNames: ['1'],
-                plots:{},
-                address1:'',
-                name1:'',
-                left:'',
+                plots: {},
+                address1: '',
+                name1: '',
+                left: '',
+                currentPage: 1,
+                total:0,
+                pagesize:8,
+                plist:{},
             },
             methods: {
+                // 分页
+                handleSizeChange(val) {
+                    console.log(`每页 ${val} 条`);
+                },
+                handleCurrentChange(val) {
+                    console.log(`当前页: ${val}`);
+                    this.currentPage = val;
+                    
+                },
+                // 展开
                 handleChange: function (val) {
                     console.log(val);
                 },
+                // 密码修改
                 change: function () {
                     axios.post('/changpwd', {
                         oldpwd: this.oldpwd,
@@ -243,17 +267,20 @@
                 this.pnumber2 = platenumber.substr(2, 5);
 
                 axios.post('/getPlot', {
-                        address:this.address1,
-                        name:this.name1,
-                        left:this.left
+                    address: this.address1,
+                    name: this.name1,
+                    left: this.left
+                })
+                    .then(res => {
+                        console.log(res.data)
+                        this.plots = res.data;
+                        this.total = this.plots.length;
                     })
-                        .then(res => {
-                            console.log(res.data)
-                            this.plots = res.data;
-                        })
-                        .catch(err => {
-                            console.error(err);
-                        });
+                    .catch(err => {
+                        console.error(err);
+                    });
+
+              
 
             },
         })        

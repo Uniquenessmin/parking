@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
-Built-By: Administrator
-Build-Jdk: 10.0.2
 Implementation-Title: parking
 Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: cp407
 Implementation-Vendor-Id: com.xxm
+Build-Jdk: 1.8.0_212
 Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
  ot-starter-parent/parking
 Created-By: Maven Integration for Eclipse
