@@ -35,4 +35,14 @@ public class PathController {
 	public String toParkingService() {
 		return "parking";
 	}
+	
+	@RequestMapping("/parking/current")
+	public String toParkingCurrent() {
+		return "current";
+	}
+	
+	@RequestMapping("/parking/future")
+	public String toParkingFuture() {
+		return "future";
+	}
 }
