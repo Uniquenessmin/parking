@@ -12,12 +12,12 @@ import com.xxm.parking.util.KeyUtil;
 
 public class Test {
 
-	public static void main(String[] args) {
-//		login();
-		String a = "1234560000";
-		System.out.println(KeyUtil.encodeByMd5(a));
-		System.out.println(KeyUtil.encodeByMd5(a).length());
-	}
+//	public static void main(String[] args) {
+////		login();
+//		String a = "1234560000";
+//		System.out.println(KeyUtil.encodeByMd5(a));
+//		System.out.println(KeyUtil.encodeByMd5(a).length());
+//	}
 	public static  void   login() {
 		HashMap<String,String> map = new HashMap<>();
 		String tel = "13217489796";

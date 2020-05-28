@@ -14,4 +14,5 @@ public class Seat {
 	private int id;
 	private int parkingid;
 	private String name;
+	private int status;
 }

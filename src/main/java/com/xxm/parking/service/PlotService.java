@@ -59,4 +59,14 @@ public class PlotService {
 		return list;
 		
 	}
+	
+	public Plot getPlot(int id) {
+		return plotMapper.getPlot(id);
+	}
+
+	public boolean changeLeftSeats(int plotid) {
+		int leftSeats = plotMapper.getLeftSeats(plotid);
+		return plotMapper.changeLeftSeats(plotid,leftSeats-1);
+		
+	}
 }

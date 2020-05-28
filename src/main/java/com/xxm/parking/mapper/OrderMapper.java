@@ -3,8 +3,10 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+
 import com.xxm.parking.pojo.Order;
 
 /**
@@ -15,8 +17,8 @@ import com.xxm.parking.pojo.Order;
 @Mapper
 public interface OrderMapper {
 		//生成新的订单
-		@Insert("insert into order(userid,recordid,createtime,updatetime) values(#{userid},#{recordid},#{createtime},#{updatetime})")
-		public boolean createOrder(Order Order);
+		@Insert("insert into parking.`order`(userid,recordid,createtime,updatetime,status) values(#{userid},#{recordid},#{createtime},#{createtime},#{status});")
+		public boolean createOrder(Order order);
 		
 		//根据id查看订单信息
 		@Select("select * from record where id = #{id}")
@@ -30,12 +32,18 @@ public interface OrderMapper {
 		@Select("select * from order #{wheresql}")
 		public List<Order> getOrderList(String wheresql);
 		
-		//修改订单信息--查看费用时，更新时间和费用
-		@Update("update record set fee=#{fee},updatetime=#{updatetime} where id=#{id}")
-		public Order changeOrder1(Order order);
+		//查看正在进行的订单数量
+		@Select("select count(1) from parking.`order` where userid = #{userid} and status=1")
+		public int getNowOrderCount(@Param("userid")int userid);
+				
 		
-		//修改订单信息--支付完成时更新
-		@Update("update record set fee=#{fee},paytype=#{paytype},status=#{status},endtime=#{endtime} where id=#{id}")
-		public Order changeOrder2(Order order);
+		//查看进行中的订单
+		@Select("select * from `order` where userid = #{userid} and status=1")
+		public Order getNowOrder(@Param("userid")int userid);
+
+		//设置订单结束时间
+		@Update("update parking.`order` set fee=#{fee},endtime=#{endtime},updatetime=#{endtime} where id=#{id}")
+		public boolean setEndTime(@Param("fee")double fee,@Param("endtime")long endtime,@Param("id")int id);
+
 
 }

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>进行中的停车记录</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!--引入 element-ui 的样式，-->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 必须先引入vue，  后使用element-ui -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <!-- 引入element 的组件库-->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <style>
+        .footer {
+            position: fixed;
+            left: 0px;
+            bottom: 0px;
+            width: 100%;
+            height: 10%;
+            background-color: #eee;
+            z-index: 9999;
+        }
+
+        .con {
+            position: unset;
+            width: 50%;
+            height: 100%;
+            color: slategrey;
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        .cen {
+            position: unset;
+            width: 400px;
+            height: 500px;
+            text-align: center;
+            font-size: 1.4em;
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app">
+        <!-- Nav tabs 导航栏-->
+        <div>
+
+            <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+                <a class="navbar-brand " href="/foruser">智能停车平台</a>
+                <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse"
+                    data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavId">
+                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/myinfo">个人资料<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href=""></a>
+                        </li>
+                        <!-- Button trigger modal 修改密码对话框 -->
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="modal" data-target="#modelId"></a>
+                        </li>
+
+                       
+                    </ul>
+                    <form class="form-inline my-2 my-lg-0" action="/">
+
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">退出</button>
+                    </form>
+                </div>
+            </nav>
+        </div>
+
+        <!-- 主体功能栏 -->
+        <div>
+
+
+            <h4 class="card-title">正在停车的信息...</h4>
+            <p class="card-text">停车场名字：{{plotName}}</p>
+            <p class="card-text">停车场地址：{{plotAddress}}</p>
+            <p class="card-text">泊位号：{{seatName}}</p>
+            <p class="card-text">开始时间：{{createtime}}</p>
+            <p class="card-text">已停车时间：{{parktime}}</p>
+            <p class="card-text">已产生费用：{{tempMoney}}元</p>
+            <a href="/leave">现在要离开停车场？点击这里</a>
+        </div>
+        <!-- 底部功能栏 -->
+        <div class="footer">
+            <el-row>
+                <el-col :span="12" class="con">
+                    <el-badge :value="pvalue" class="item" type="primary">
+                        <span class="el-icon-place"></span>
+                    </el-badge>
+                    <div class="grid-content bg-purple" style="text-align: center;">在停</div>
+                </el-col>
+                <el-col :span="12" class="con">
+                    <span class="el-icon-user"></span>
+                    <div class="grid-content bg-purple-light">我的</div>
+                </el-col>
+            </el-row>
+
+
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+
+                oldpwd: '',
+                pwd1: '',
+                pwd2: '',
+                show: '',
+                ss: '',
+                name: '',
+                tel: '',
+                platenumber: '',
+                id: '',
+                value: '',
+                pnumber2: '',
+
+                address1: '',
+                name1: '',
+                left: '',
+               
+                plotId: '',
+                uri: '',
+                pvalue: 0,
+                record: {},
+                createtime: '',
+                parktime: '',
+                plotName:'',
+                plotAddress:'',
+                seatName:'',
+                tempMoney:0,
+            },
+            methods: {
+                //时间
+
+                timeChange: function (time) {
+                    Date.prototype.toLocaleString = function () {
+                        return this.getFullYear() + "年" + (this.getMonth() + 1) + "月" + this.getDate() + "日 " + this.getHours() + "点" + this.getMinutes() + "分" + this.getSeconds() + "秒";
+                    };
+                    var unixTimestamp = new Date(time);
+                    commonTime = unixTimestamp.toLocaleString();
+                    return commonTime;
+                },
+
+
+            },
+            computed: {
+
+            },
+            mounted() {
+
+                var name = localStorage.getItem("name");
+                var tel = localStorage.getItem("tel");
+                var platenumber = localStorage.getItem("platenumber");
+                var id = localStorage.getItem("id");
+                this.tel = tel;
+                this.name = name;
+                this.platenumber = platenumber;
+                this.id = id;
+                this.value = platenumber.substr(0, 2);
+                this.pnumber2 = platenumber.substr(2, 5);
+
+                //正在进行的订单数
+                axios.post("/orderCount", {
+                    userid: this.id
+                })
+                    .then(res => {
+                        console.log(res.data);
+                        this.pvalue = res.data;
+                    });
+
+                //停车ing
+                console.log('/' + this.id + "/currentRecord");
+                axios.get('/' + this.id + '/currentRecord')
+                    .then(res => {
+                        console.log(res.data);
+                        this.record = res.data.record;
+                        var ctime = this.record.createtime;
+                        console.log(ctime);
+                       
+                        var unixTimestamp = new Date(ctime);
+                        console.log(unixTimestamp);
+                        commonTime = unixTimestamp.toLocaleString();
+                        this.createtime =  commonTime;
+                        console.log(this.createtime);
+                        this.parktime =res.data.parkTime ;
+                        
+                        this.plotName = this.record.plot.name;
+                        this.plotAddress = this.record.plot.address;
+                        this.seatName = this.record.seat.name;
+                        this.tempMoney = res.data.tempMoney;
+                    });
+            }
+        })       
+    </script>
+
+
+</body>
+
+</html>

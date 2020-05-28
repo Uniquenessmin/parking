@@ -17,4 +17,8 @@ public class Record {
 	private int userid;
 	private long createtime;
 	private long endtime;
+	private User user;
+	private Seat seat;
+	private Plot plot;
+	private int button;
 }

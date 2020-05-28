@@ -21,4 +21,5 @@ public class Order {
 	private long createtime;
 	private long endtime;
 	private long updatetime;
+	Record record;
 }

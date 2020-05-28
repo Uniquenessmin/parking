@@ -141,20 +141,26 @@
             <!-- 停车ing -->
             <div style="margin: 20%;padding-left: 15%;padding-top: 15%;">
                 <span
-                    style="border-radius: 50%;    height: 100px;    width:100px;    display: inline-block;    background: #238ff9;      vertical-align: top;">
-                    <span
-                        style="display: block;    color: #FFFFFF;    height: 100px;    line-height: 100px;    text-align: center"><a
-                            href="/parking.html" style="color: #FFFFFF;">进场</a></span>
+                    style="border-radius: 50%; height: 100px;width:100px;display: inline-block; background: #238ff9;      vertical-align: top;">
+                    <span style="display: block;color: #FFFFFF;height: 100px; line-height: 100px; text-align: center">
+                        <el-button type="text" @click="open" style="color: #FFFFFF;">进场</el-button>
+                    </span>
                 </span>
             </div>
         </div>
         <!-- 底部功能栏 -->
         <div class="footer">
             <el-row>
-                <el-col :span="12" class="con">
-                    <el-badge :value="1" class="item" type="primary">
+                <el-col  v-if="pvalue>0" :span="12" class="con">
+                    <el-badge :value="pvalue" class="item" type="primary">
                         <span class="el-icon-place"></span>
                     </el-badge>
+                    <div class="grid-content bg-purple" style="text-align: center;" ><a :href="'record?userid='+id">在停</a></div>
+                </el-col>
+                <el-col  v-else :span="12" class="con">
+                   
+                    <span class="el-icon-place"></span>
+                    
                     <div class="grid-content bg-purple" style="text-align: center;">在停</div>
                 </el-col>
                 <el-col :span="12" class="con">
@@ -182,7 +188,7 @@
         new Vue({
             el: '#app',
             data: {
-                flag: false,
+
                 oldpwd: '',
                 pwd1: '',
                 pwd2: '',
@@ -203,8 +209,58 @@
                 total: 0,
                 pagesize: 10,
                 plist: {},
+                plotId: '',
+                uri: '',
+                pvalue: 0,
             },
             methods: {
+                //弹框
+                open: function () {
+                    this.$confirm('是否已到达停车场入口?', '提示', {
+                        confirmButtonText: '是，马上进场',
+                        cancelButtonText: '否，还有一段距离',
+                        type: 'warning'
+                    }).then(() => {
+                        this.$message({
+                            type: 'success',
+                            message: '马上为您抬杠...',
+                        });
+                        if (this.pvalue == 0) {
+                            //当前进行中的订单记录为0才给进去
+                            localStorage.setItem("plotid", this.plotId);
+                            console.log(this.uri + '/seatList');
+                            //创建停车记录
+                            axios.post('/start', {
+                                userid: this.id,
+                                createtime: new Date().getTime()
+                            })
+                                .then(res => {
+                                    console.log(res.data)
+                                    var map = res.data;
+                                    if (map.state == 1) {
+                                        localStorage.setItem("recordid", map.recordid);
+                                        localStorage.setItem("orderid", map.orderid);
+                                        this.pvalue = 1;
+                                        console.log("recordid:" + map.recordid);
+                                        console.log("orderid:" + map.orderid);
+
+                                    }
+                                })
+                                .catch(err => {
+                                    console.error(err);
+                                })
+                            window.location.href = this.uri + '/seatList';
+                        } else {
+                            alert("您有一笔正在进行中的订单，请先完成支付！");
+                        }
+
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '已取消入场'
+                        });
+                    });
+                },
                 // 分页
                 handleSizeChange(val) {
                     console.log(`每页 ${val} 条`);
@@ -261,22 +317,32 @@
                 this.value = platenumber.substr(0, 2);
                 this.pnumber2 = platenumber.substr(2, 5);
 
-                axios.post('/getPlot', {
-                    address: this.address1,
-                    name: this.name1,
-                    left: this.left
+                var url = location.href;
+                this.uri = url;
+                console.log(url);//要处理的url
+                var index = url.lastIndexOf("\/");
+                str = url.substring(index + 1, url.length);
+                if (str.indexOf("?") != -1) {
+
+                    str = str.split("?")[0];
+
+                }
+                //处理后的url
+                this.plotId = str;
+                console.log(this.plotId);
+                console.log("userid:" + this.id);
+                //正在进行的订单数
+                axios.post('/orderCount', {
+                    userid: this.id
                 })
                     .then(res => {
-                        console.log(res.data)
-                        this.plots = res.data;
-                        this.total = this.plots.length;
+                        console.log(res.data);
+                        this.pvalue = res.data;
                     })
                     .catch(err => {
                         console.error(err);
-                    });
-
-
-
+                    })
+               
             },
         })        
     </script>

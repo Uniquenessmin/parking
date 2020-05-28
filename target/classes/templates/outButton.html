@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>出场按钮</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!--引入 element-ui 的样式，-->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 必须先引入vue，  后使用element-ui -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <!-- 引入element 的组件库-->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <style>
+        .footer {
+            position: fixed;
+            left: 0px;
+            bottom: 0px;
+            width: 100%;
+            height: 10%;
+            background-color: #eee;
+            z-index: 9999;
+        }
+
+        .con {
+            position: unset;
+            width: 50%;
+            height: 100%;
+            color: slategrey;
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        .cen {
+            position: unset;
+            width: 400px;
+            height: 500px;
+            text-align: center;
+            font-size: 1.4em;
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app">
+        <!-- Nav tabs 导航栏-->
+        <div>
+
+            <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+                <a class="navbar-brand " href="/foruser">智能停车平台</a>
+                <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse"
+                    data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavId">
+
+                    <form class="form-inline my-2 my-lg-0" action="/main">
+
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">退出</button>
+                    </form>
+                </div>
+            </nav>
+        </div>
+
+        <!-- 主体功能栏 -->
+        <div>
+            <el-alert title="请到达停车场出口再点击“出场”按钮！并且订单支付完成方可为您抬杆出场！" type="info">
+            </el-alert>
+
+            <!-- 停车ing -->
+            <div style="margin: 20%;padding-left: 15%;padding-top: 15%;">
+                <span
+                    style="border-radius: 50%; height: 100px;width:100px;display: inline-block; background: #238ff9;      vertical-align: top;">
+                    <span style="display: block;color: #FFFFFF;height: 100px; line-height: 100px; text-align: center">
+                        <el-button type="text" @click="open" style="color: #FFFFFF;">出场</el-button>
+                    </span>
+                </span>
+            </div>
+        </div>
+        <!-- 底部功能栏 -->
+        <div class="footer">
+            <el-row>
+                <div class="footer">
+                    <el-col v-if="pvalue>0" :span="12" class="con">
+                        <el-badge :value="pvalue" class="item" type="primary">
+                            <span class="el-icon-place"></span>
+                        </el-badge>
+                        <div class="grid-content bg-purple" style="text-align: center;"><a
+                                :href="'record?userid='+id">在停</a> </div>
+                    </el-col>
+                    <el-col v-else :span="12" class="con">
+
+                        <span class="el-icon-place"></span>
+
+                        <div class="grid-content bg-purple" style="text-align: center;">在停</div>
+                    </el-col>
+                    <el-col :span="12" class="con">
+                        <span class="el-icon-user"></span>
+                        <div class="grid-content bg-purple-light">我的</div>
+                    </el-col>
+            </el-row>
+
+
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+
+                ss: '',
+                name: '',
+                tel: '',
+                platenumber: '',
+                id: '',
+                value: '',
+                pnumber2: '',
+                activeNames: ['1'],
+                plots: {},
+                address1: '',
+                name1: '',
+                left: '',
+                currentPage: 1,
+                total: 0,
+                pagesize: 10,
+                plist: {},
+                plotId: '',
+                uri: '',
+                pvalue: 0,
+                buttonNUM: 0,
+            },
+            methods: {
+                buttonChance: function (rid) {
+                    //按钮可点击次数
+                    axios.get('/buttonCount?recordid='+localStorage.getItem("recordid"))
+                        .then(res => {
+                            console.log(res.data);
+                            this.buttonNUM = res.data;
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        });
+                    return this.buttonNUM;
+
+                },
+                //弹框
+                open: function () {
+                    if ((this.pvalue == 0)&&(this.buttonNUM>0)) {
+
+                        this.$confirm('开门按钮点击后将失效，请到达出口后再点击【出场】按钮', '提示', {
+                            confirmButtonText: '已到出口，马上出场',
+                            cancelButtonText: '离出口还差一段距离，稍后出场',
+                            type: 'warning'
+                        }).then(() => {
+                            this.$message({
+                                type: 'success',
+                                message: '马上为您抬杆...',
+                            });
+
+
+                        }).catch(() => {
+                            this.$message({
+                                type: 'info',
+                                message: '已取消出场'
+                            });
+                        });
+                    }else{
+                        alert('出场按钮失效！');
+                    }
+                },
+
+            },
+            computed: {
+
+            },
+            mounted() {
+
+                var name = localStorage.getItem("name");
+                var tel = localStorage.getItem("tel");
+                var platenumber = localStorage.getItem("platenumber");
+                var id = localStorage.getItem("id");
+                this.tel = tel;
+                this.name = name;
+                this.platenumber = platenumber;
+                this.id = id;
+                this.value = platenumber.substr(0, 2);
+                this.pnumber2 = platenumber.substr(2, 5);
+
+                var url = location.href;
+                this.uri = url;
+                console.log(url);//要处理的url
+                var index = url.lastIndexOf("\/");
+                str = url.substring(index + 1, url.length);
+                if (str.indexOf("?") != -1) {
+
+                    str = str.split("?")[0];
+
+                }
+                //处理后的url
+                this.plotId = str;
+                console.log(this.plotId);
+                console.log("userid:" + this.id);
+                //正在进行的订单数
+                axios.post('/orderCount', {
+                    userid: this.id
+                })
+                    .then(res => {
+                        console.log(res.data);
+                        this.pvalue = res.data;
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    });
+
+            },
+        })        
+    </script>
+
+
+</body>
+
+</html>

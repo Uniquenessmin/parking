@@ -121,7 +121,7 @@
                         </div>
     
                     </ul>
-                    <form class="form-inline my-2 my-lg-0" action="/">
+                    <form class="form-inline my-2 my-lg-0" method="post" action="/main">
     
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">退出</button>
                     </form>
@@ -165,10 +165,16 @@
         <!-- 底部功能栏 -->
         <div class="footer">
             <el-row>
-                <el-col :span="12" class="con">
-                    <el-badge :value="1" class="item" type="primary">
+                <el-col  v-if="pvalue>0" :span="12" class="con">
+                    <el-badge :value="pvalue" class="item" type="primary">
                         <span class="el-icon-place"></span>
                     </el-badge>
+                    <div class="grid-content bg-purple" style="text-align: center;" ><a :href="'record?userid='+id">在停</a> </div>
+                </el-col>
+                <el-col  v-else :span="12" class="con">
+                   
+                    <span class="el-icon-place"></span>
+                    
                     <div class="grid-content bg-purple" style="text-align: center;">在停</div>
                 </el-col>
                 <el-col :span="12" class="con">
@@ -208,9 +214,12 @@
                 id: '',
                 value: '',
                 pnumber2: '',
+                pvalue:0,
             },
             methods: {
-
+                recordUrl:function(){
+                    return "/record?userid="+this.id;
+                },
                 change: function () {
                     if(this.pwd1 != this.pwd2){
                         alert('新密码两次输入不一致');
@@ -251,9 +260,17 @@
                 this.name = name;
                 this.platenumber = platenumber;
                 this.id = id;
+                console.log(this.id);
                 this.value = platenumber.substr(0, 2);
                 this.pnumber2 = platenumber.substr(2, 5);
-
+                 //正在进行的订单数
+                 axios.post("/orderCount", {
+                    userid: this.id
+                })
+                    .then(res => {
+                        console.log(res.data);
+                        this.pvalue = res.data;
+                    })
             },
         })        
     </script>
