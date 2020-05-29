@@ -91,7 +91,7 @@
                 <span
                     style="border-radius: 50%; height: 100px;width:100px;display: inline-block; background: #238ff9;      vertical-align: top;">
                     <span style="display: block;color: #FFFFFF;height: 100px; line-height: 100px; text-align: center">
-                        <el-button type="text" @click="open" style="color: #FFFFFF;">出场</el-button>
+                        <el-button type="text" @click="open()" style="color: #FFFFFF;">出场</el-button>
                     </span>
                 </span>
             </div>
@@ -100,14 +100,8 @@
         <div class="footer">
             <el-row>
                 <div class="footer">
-                    <el-col v-if="pvalue>0" :span="12" class="con">
-                        <el-badge :value="pvalue" class="item" type="primary">
-                            <span class="el-icon-place"></span>
-                        </el-badge>
-                        <div class="grid-content bg-purple" style="text-align: center;"><a
-                                :href="'record?userid='+id">在停</a> </div>
-                    </el-col>
-                    <el-col v-else :span="12" class="con">
+                    
+                    <el-col :span="12" class="con">
 
                         <span class="el-icon-place"></span>
 
@@ -121,7 +115,7 @@
 
 
         </div>
-    </div>
+    </div></div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -161,7 +155,7 @@
                 buttonNUM: 0,
             },
             methods: {
-                buttonChance: function (rid) {
+                buttonChance: function () {
                     //按钮可点击次数
                     axios.get('/buttonCount?recordid='+localStorage.getItem("recordid"))
                         .then(res => {
@@ -183,10 +177,19 @@
                             cancelButtonText: '离出口还差一段距离，稍后出场',
                             type: 'warning'
                         }).then(() => {
+                            axios.post('/'+this.id+'/end')
+                                .then(res => {
+                                    console.log(res)
+                                })
+                                .catch(err => {
+                                    console.error(err); 
+                                });
                             this.$message({
                                 type: 'success',
                                 message: '马上为您抬杆...',
+                               
                             });
+                            window.location.href="/finish";
 
 
                         }).catch(() => {
@@ -216,32 +219,7 @@
                 this.id = id;
                 this.value = platenumber.substr(0, 2);
                 this.pnumber2 = platenumber.substr(2, 5);
-
-                var url = location.href;
-                this.uri = url;
-                console.log(url);//要处理的url
-                var index = url.lastIndexOf("\/");
-                str = url.substring(index + 1, url.length);
-                if (str.indexOf("?") != -1) {
-
-                    str = str.split("?")[0];
-
-                }
-                //处理后的url
-                this.plotId = str;
-                console.log(this.plotId);
-                console.log("userid:" + this.id);
-                //正在进行的订单数
-                axios.post('/orderCount', {
-                    userid: this.id
-                })
-                    .then(res => {
-                        console.log(res.data);
-                        this.pvalue = res.data;
-                    })
-                    .catch(err => {
-                        console.error(err);
-                    });
+                this.buttonChance();
 
             },
         })        

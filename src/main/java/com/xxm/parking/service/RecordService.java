@@ -78,4 +78,25 @@ public class RecordService {
 	public int getButtonNum(int id) {
 		return recordMapper.getButtonNum(id);
 	}
+
+	/**
+	 * 出场修改停车记录参数
+	 * @param userid
+	 * @param endtime
+	 * @param i
+	 * @return
+	 */
+	public boolean changeEnd(int userid, long endtime, int num) {
+		return recordMapper.changeEnd(userid, endtime,  num);
+	}
+
+	/**
+	 *根据id获得 停车记录
+	 * @param recordid
+	 * @return
+	 */
+	public Record getRecordById(int recordid) {
+		
+		return recordMapper.getRecordById(recordid);
+	}
 }

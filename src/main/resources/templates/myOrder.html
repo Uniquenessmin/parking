@@ -72,21 +72,8 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="collapsibleNavId">
-                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="/myinfo">个人资料<span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href=""></a>
-                        </li>
-                        <!-- Button trigger modal 修改密码对话框 -->
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="modal" data-target="#modelId"></a>
-                        </li>
 
-                       
-                    </ul>
-                    <form class="form-inline my-2 my-lg-0" action="/">
+                    <form class="form-inline my-2 my-lg-0" action="/main">
 
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">退出</button>
                     </form>
@@ -96,24 +83,81 @@
 
         <!-- 主体功能栏 -->
         <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>序</th>
+                        <th>完成日期</th>
+                        <th>停车场</th>
+                        <th>金额</th>
+                        <th>详情</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(i, k) in orders" :key="k">
+                        <td scope="row">{{k+1}}</td>
+                        <td style="width: 30%">{{i.date2}}</td>
+                        <td style="width: 30%">{{i.plot.name}}</td>
+                        <td style="text-align: right">￥{{i.fee}}</td>
+                        <td>
+                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                :data-target="'#myModal'+k">
+                                +
 
+                            </button>
+                            <!-- 模态框（Modal） -->
+                            <div class="modal fade" :id="'myModal'+k" tabindex="-1" role="dialog"
+                                aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                            <div class="modal-header">
+                                                   
+                                                    <h4 class="modal-title" id="myModalLabel">
+                                                        订单详情
+                                                    </h4>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                            &times;
+                                                        </button>
+                                                </div>
+                                        <div class="modal-body">
+                                            <p>开始时间：{{i.date1}}</p>
+                                    <p>结束时间：{{i.date2}}</p>
+                                            <p>停车场名字：{{i.plot.name}}</p>
+                                            <p>地址：{{i.plot.address}}</p>
+                                            <p>泊位号：{{i.seat.name}}</p>
+                                            <p>停车时长：{{i.record.stayTime}}</p>
+                                            <p>支付金额：￥{{i.fee}}</p>
+                                            <p>支付方式：{{i.paytype==1?'微信':'支付宝'}}</p>
+                                            <p>订单状态：{{i.status==1?'进行中':'已完成'}}</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                            </button>
 
-            <h4 class="card-title">正在停车的信息...</h4>
-            <p class="card-text">停车场名字：{{plotName}}</p>
-            <p class="card-text">停车场地址：{{plotAddress}}</p>
-            <p class="card-text">泊位号：{{seatName}}</p>
-            <p class="card-text">开始时间：{{createtime}}</p>
-            <p class="card-text">已停车时间：{{parktime}}</p>
-            <p class="card-text">已产生费用：{{tempMoney}}元</p>
-            <a href="/leave" ><span icon="el-icon-link"></span>现在要离开停车场？点击这里</a>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal -->
+                            </div>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
         </div>
         <!-- 底部功能栏 -->
         <div class="footer">
             <el-row>
-                <el-col :span="12" class="con">
+                <el-col v-if="pvalue>0" :span="12" class="con">
                     <el-badge :value="pvalue" class="item" type="primary">
                         <span class="el-icon-place"></span>
                     </el-badge>
+                    <div class="grid-content bg-purple" style="text-align: center;"><a
+                            :href="'record?userid='+id">在停</a> </div>
+                </el-col>
+                <el-col v-else :span="12" class="con">
+
+                    <span class="el-icon-place"></span>
+
                     <div class="grid-content bg-purple" style="text-align: center;">在停</div>
                 </el-col>
                 <el-col :span="12" class="con">
@@ -157,30 +201,13 @@
                 address1: '',
                 name1: '',
                 left: '',
-               
+
                 plotId: '',
                 uri: '',
                 pvalue: 0,
-                record: {},
-                createtime: '',
-                parktime: '',
-                plotName:'',
-                plotAddress:'',
-                seatName:'',
-                tempMoney:0,
+                orders: {},
             },
             methods: {
-                //时间
-
-                timeChange: function (time) {
-                    Date.prototype.toLocaleString = function () {
-                        return this.getFullYear() + "年" + (this.getMonth() + 1) + "月" + this.getDate() + "日 " + this.getHours() + "点" + this.getMinutes() + "分" + this.getSeconds() + "秒";
-                    };
-                    var unixTimestamp = new Date(time);
-                    commonTime = unixTimestamp.toLocaleString();
-                    return commonTime;
-                },
-
 
             },
             computed: {
@@ -208,26 +235,14 @@
                         this.pvalue = res.data;
                     });
 
-                //停车ing
-                console.log('/' + this.id + "/currentRecord");
-                axios.get('/' + this.id + '/currentRecord')
+
+                axios.get('/' + this.id + '/orderList')
                     .then(res => {
                         console.log(res.data);
-                        this.record = res.data.record;
-                        var ctime = this.record.createtime;
-                        console.log(ctime);
-                       
-                        var unixTimestamp = new Date(ctime);
-                        console.log(unixTimestamp);
-                        commonTime = unixTimestamp.toLocaleString();
-                        this.createtime =  commonTime;
-                        console.log(this.createtime);
-                        this.parktime =res.data.parkTime ;
-                        
-                        this.plotName = this.record.plot.name;
-                        this.plotAddress = this.record.plot.address;
-                        this.seatName = this.record.seat.name;
-                        this.tempMoney = res.data.tempMoney;
+                        this.orders = res.data;
+                        localStorage.setItem("orders", this.orders);
+                    }).catch(err => {
+                        console.error(err);
                     });
             }
         })       

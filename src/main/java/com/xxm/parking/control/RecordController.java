@@ -81,7 +81,7 @@ public class RecordController {
 	}
 
 	/**
-	 * 出场按钮次数
+	 * 获取出场按钮次数
 	 * 
 	 * @param id
 	 * @return
@@ -89,5 +89,18 @@ public class RecordController {
 	@GetMapping("/buttonCount")
 	public int getButtonNum(@RequestParam("recordid") int id) {
 		return recordService.getButtonNum(id);
+	}
+	
+	
+	/**
+	 * 出场请求处理，开门
+	 * @param userid
+	 * @return
+	 */
+	@PostMapping("/{userid}/end")
+	public boolean openForEnd(@PathVariable("userid")int userid) {
+		//修改停车记录，endtime，button
+		long endtime = System.currentTimeMillis();
+		return recordService.changeEnd(userid,endtime,-1);
 	}
 }

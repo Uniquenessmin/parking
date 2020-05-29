@@ -33,6 +33,6 @@ public interface SeatMapper {
 	public List<String> getAvailableSeatList(@Param("plotId")int plotId);
 
 	//修改泊位状态
-	@Update("update seat set status=2 where id = #{seatid}")
-	public boolean changeSeatStatus(@Param("seatid")int seatid);
+	@Update("update seat set status=#{status} where id = #{seatid}")
+	public boolean changeSeatStatus(@Param("seatid")int seatid,@Param("status")int status);
 }

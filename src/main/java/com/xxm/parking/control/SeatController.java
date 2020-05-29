@@ -47,8 +47,8 @@ public class SeatController {
 		//填充停车记录和订单记录
 		Record r = recordService.updateRecord(seatid, recordId);
 		//修改泊位状态与车场剩余泊位数
-		boolean isOk = seatService.changeSeatStatus(seatid);
-		plotService.changeLeftSeats(plotid);
+		boolean isOk = seatService.changeSeatStatus(seatid,2);
+		plotService.changeLeftSeats(plotid,-1);
 		
 		//返回停车记录对象和订单对象
 		map.put("record", r);

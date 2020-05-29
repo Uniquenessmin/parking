@@ -204,7 +204,7 @@
                 name: '',
                 tel: '',
                 platenumber: '',
-                id: '',
+                id: 0,
                 value: '',
                 pnumber2: '',
                 activeNames: ['1'],
@@ -214,7 +214,7 @@
                 left: '',
                 total: 0,              
                 plist: {},
-                plotId: '',
+                plotId: 0,
                 seatName: '',
                 recordId: 0,
                 count: 0,
@@ -269,7 +269,7 @@
                         axios.post('/chooseSeat', {
                             seatid:val.id,
                             plotid: this.plotId,
-                            seatName: val,
+                            seatName: val.name,
                             userid: this.id,
                             recordId: this.recordId
                         })
@@ -278,7 +278,7 @@
                                 localStorage.setItem("seatId",val.id);
                                 var url = location.href;
 
-                                window.location.href = "/record";
+                                window.location.href = "/record?userid="+this.id;
                             })
                             .catch(err => {
                                 console.error(err);

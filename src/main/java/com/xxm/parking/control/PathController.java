@@ -17,82 +17,106 @@ public class PathController {
 	OrderService orderService;
 	@Autowired
 	RecordService recordService;
-	
+
 	@RequestMapping("/main")
 	public String firstPage() {
 		return "login";
 	}
-	
+
 	@RequestMapping("/foruser")
 	public String userPage() {
 		return "foruser";
 	}
-	
+
 	@RequestMapping("/manager")
 	public String managerPage() {
 		return "manager";
 	}
-	
+
 	@RequestMapping("/register")
 	public String register() {
 		return "register";
 	}
-	
+
 	@RequestMapping("/myinfo")
 	public String myInfo() {
 		return "myInfo";
 	}
-	
+
 	@RequestMapping("/parking.html")
 	public String toParkingService() {
 		return "parking";
 	}
-	
+
 	@RequestMapping("/parking/current/{id}")
-	public String toParkingCurrent(@PathVariable("id")String id) {
+	public String toParkingCurrent(@PathVariable("id") String id) {
 		return "current";
 	}
-	
+
 	@RequestMapping("/parking/future/{id}")
-	public String toParkingFuture(@PathVariable("id")String id) {
+	public String toParkingFuture(@PathVariable("id") String id) {
 		return "future";
 	}
-	
-	//某停车场的泊位列表
+
+	// 某停车场的泊位列表
 	@RequestMapping("/parking/current/{id}/seatList")
-	public String toSeat(@PathVariable("id")String id) {
+	public String toSeat(@PathVariable("id") String id) {
 		return "seat";
 	}
-	
-	//查看正在停车的记录
+
+	// 查看正在停车的记录
 	@RequestMapping("/record")
-	public String toRecord(@RequestParam("userid")int id) {
-		System.out.println("toRecord...userid:"+id);
+	public String toRecord(@RequestParam("userid") int id) {
+		System.out.println("toRecord...userid:" + id);
 		Record r = recordService.nowRecord(id);
-		
-		if(r.getSeatid()==0) {
+
+		if (r.getSeatid() == 0) {
 			return "seat";
-		}else {
+		} else {
 			return "record";
 		}
-			
+
 	}
-	
-	//离场界面
+
+	// 离场界面
 	@RequestMapping("/leave")
-	public String leavePlot(){
+	public String leavePlot() {
 		return "leave";
 	}
-	
-	//支付页面
+
+	// 支付页面
 	@RequestMapping("/{id}/payOrder")
-	public String toPay(@PathVariable("id")String id) {
+	public String toPay(@PathVariable("id") String id) {
 		return "pay";
 	}
-	
-	//支付页面
-		@RequestMapping("/out")
-		public String toButton() {
-			return "outButton";
-		}
+
+	// 出场页面
+	@RequestMapping("/out")
+	public String toButton() {
+		return "outButton";
+	}
+
+	// 完成页面
+	@RequestMapping("/finish")
+	public String finish() {
+		return "finish";
+	}
+
+	// 我的订单页面
+	@RequestMapping("/myOrder")
+	public String myOrder() {
+		return "myOrder";
+	}
+
+	// 我的停车记录页面
+	@RequestMapping("/myRecord")
+	public String myRecord() {
+		return "myRecordList";
+	}
+
+	// 我的页面
+	@RequestMapping("/my")
+	public String my() {
+		return "my";
+	}
 }

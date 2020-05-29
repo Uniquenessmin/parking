@@ -24,7 +24,7 @@ public interface PlotMapper {
 	public String imgStr(String id);
 
 	// 修改剩余泊位
-	@Update("update parkings set leftparkinglot=#{i} where id=#{id}  ")
+	@Update("update parkings set leftparkinglot=leftparkinglot+#{i} where id=#{id}  ")
 	public boolean changeLeftSeats(@Param("id")int plotid, @Param("i")int i);
 	// 查看剩余泊位
 	@Select("select leftparkinglot from parkings where id = #{id}")

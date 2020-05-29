@@ -109,12 +109,21 @@
                     <p class="card-text">开始时间：{{btime}}</p>
                     <p class="card-text">已停车时间：{{parktime}}</p>
                     <p class="card-text">已产生费用：{{myOrder.fee}}元</p>
-                    <button class="btn btn-success btn-block" @click="open()">
-                        马上支付
-                    </button>
-                    <button  class="btn btn-block btn-primary">
-                       <a href="/leave" style="color:#eee">返回上一页</a> 
-                    </button>
+
+                    <el-button size="medium" type="success" @click="centerDialogVisible = true">支付</el-button>
+                    <el-dialog title="请选择一种支付方式" :visible.sync="centerDialogVisible" width="80%" center>
+                            <p style="text-align: center;font:1.5em">金额：{{myOrder.fee}}元</p>
+                        <span slot="footer" class="dialog-footer ">
+                            
+                            <el-button type="primary" @click="pay('1')">微信</el-button>
+                            <el-button type="primary" @click="pay('2')">支付宝</el-button>
+                            <el-button @click="centerDialogVisible = false">取 消</el-button>
+                        </span>
+                    </el-dialog>
+
+                    <el-button size="medium" type="primary">
+                        <a href="/leave" style="color:#eee">返回上一页</a>
+                    </el-button>
                 </div>
             </div>
 
@@ -182,50 +191,42 @@
                 pvalue: 0,
                 myOrder: {},
                 parktime: '',
-                btime:'',
-                mySeat:{},
-                myPlot:{},
-                paytype:1,
+                btime: '',
+                mySeat: {},
+                myPlot: {},
+                paytype: 1,
+                centerDialogVisible: false
             },
             methods: {
-                
-                //弹框
-                open: function () {
-                    this.$confirm('选择支付的方式', '提示', {
-                        
-                        confirmButtonText: '微信',
-                        confirmButtonText: '支付宝',
-                        cancelButtonText: '取消',
-                        type: 'warning'
-                    }).then(() => {
-                        var paytext = confirmButtonText;
-                        if(paytext=='微信'){
-                            this.paytype=1;
-                        }else{
-                            this.paytype=2;
-                        }
-                        this.$message({
-                            type: 'success',
-                            message: '支付成功，请在五分钟内自助抬杆离场',
-                        });
-                       //订单完成，并跳转出场按钮给车主开门
-                       axios.post('/'+this.id+'/orderFinished?paytype='+this.paytype)
-                       .then(res => {
-                           console.log(res.data);
-                           localStorage.setItem("recordid",this.record.id);
-                           //开门按钮uri
-                           window.location.href='/out';
-                       })
-                       .catch(err => {
-                           console.error(err); 
-                       })
 
-                    }).catch(() => {
-                        this.$message({
-                            type: 'info',
-                            message: '已取消支付'
-                        });
-                    });
+                //弹框
+                pay: function (ptype) {
+                    
+                        console.log(this.ptype);
+                        if(ptype=='1'){
+                            this.paytype = 1;
+                        }else{
+                            this.paytype = 2;
+                        }
+                        //订单完成，并跳转出场按钮页面给车主
+                        axios.post('/' + this.id + '/orderFinished?paytype=' + this.paytype
+                            + '&plotid=' + this.myPlot.id
+                            + '&seatid=' + this.mySeat.id
+                            + '&orderid=' + this.myOrder.id)
+                            .then(res => {
+                                console.log(res.data);
+                                localStorage.setItem("recordid", this.myOrder.recordid);
+                                localStorage.setItem("orderid", this.myOrder.id);
+                                //开门按钮uri
+                                if (res.data) {
+                                    window.location.href = '/out';
+                                }
+
+                            })
+                            .catch(err => {
+                                console.error(err);
+                            });
+
                 },
 
             },
@@ -275,15 +276,15 @@
                     .then(res => {
                         console.log(res.data);
                         this.myOrder = res.data.order;
-                        this.parktime =res.data.parkTime ;
+                        this.parktime = res.data.parkTime;
                         this.myPlot = res.data.record.plot;
                         this.mySeat = res.data.record.seat;
-                        console.log("myPlot:"+this.myPlot);
+                        console.log("myPlot:" + this.myPlot);
                         var ctime = this.myOrder.createtime;
                         var unixTimestamp = new Date(ctime);
                         console.log(unixTimestamp);
                         commonTime = unixTimestamp.toLocaleString();
-                        this.btime =  commonTime;
+                        this.btime = commonTime;
                         console.log(this.btime);
                     })
                     .catch(err => {

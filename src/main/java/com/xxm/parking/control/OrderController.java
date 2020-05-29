@@ -1,6 +1,7 @@
 package com.xxm.parking.control;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,11 +91,40 @@ public class OrderController {
 	 * @return
 	 */
 	@PostMapping("/{userid}/orderFinished")
-	public boolean FinishOrder(@PathVariable("userid")int userid,@RequestParam("paytype") int paytype) {
+	public boolean FinishOrder(@PathVariable("userid")int userid,
+			@RequestParam("paytype") int paytype,
+			@RequestParam("seatid") int seatid,
+			@RequestParam("plotid")int plotid,
+			@RequestParam("orderid")int orderid
+			) {
+		System.out.println("finishOrder...");
 		//更新订单状态与支付方式
-		
+		boolean n1 = orderService.updateOrder(orderid,2,paytype);
 		//泊位释放，车场剩余泊位+1
-		
+		boolean n2 = seatService.changeSeatStatus(seatid,1);
+		boolean n3 = plotService.changeLeftSeats(plotid,1);
+		if(n1&&n2&&n3) {
+			return true;
+		}
 		return false;
+	}
+	
+	@GetMapping("/{userid}/orderList")
+	public List<Order> getOrderListByUserid(@PathVariable("userid")int userid){
+		System.out.println(" getOrderListByUserid...");
+		List<Order> list = orderService.getOrdersByUser(userid);
+		//中间处理,停车记录，停车场，泊位
+		for(Order r:list) {
+			//设置停车记录对象
+			Record re = recordService.getRecordById(r.getRecordid());
+			r.setRecord(re);
+			//设置泊位
+			Seat se = seatService.getSeat(re.getSeatid());
+			r.setSeat(se);
+			//设置停车场
+			Plot pl = plotService.getPlot(se.getParkingid());
+			r.setPlot(pl);			
+		}
+		return list;
 	}
 }

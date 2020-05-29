@@ -21,15 +21,15 @@ public interface OrderMapper {
 		public boolean createOrder(Order order);
 		
 		//根据id查看订单信息
-		@Select("select * from record where id = #{id}")
-		public Order getOrderById(String id);
+		@Select("select * from parking.`order` where id = #{id}")
+		public Order getOrderById(@Param("id")String id);
 		
-		//根据用户id查看订单停车记录列表
-		@Select("select * from order where userid = #{userid}")
-		public List<Order> getOrderByUserid(String userid);
+		//根据用户id查看订单记录列表
+		@Select("select * from parking.`order` where userid = #{userid} order by createtime desc")
+		public List<Order> getOrderByUserid(@Param("userid")int userid);
 		
 		//查看订单列表，支持模糊查询
-		@Select("select * from order #{wheresql}")
+		@Select("select * from parking.`order` #{wheresql}")
 		public List<Order> getOrderList(String wheresql);
 		
 		//查看正在进行的订单数量
@@ -44,6 +44,10 @@ public interface OrderMapper {
 		//设置订单结束时间
 		@Update("update parking.`order` set fee=#{fee},endtime=#{endtime},updatetime=#{endtime} where id=#{id}")
 		public boolean setEndTime(@Param("fee")double fee,@Param("endtime")long endtime,@Param("id")int id);
+
+		//订单完成--修改
+		@Update("update parking.`order` set status=#{status},paytype=#{paytype}  where id=#{id}")
+		public boolean updateOrder(@Param("id")int id, @Param("status")int status, @Param("paytype")int paytype);
 
 
 }

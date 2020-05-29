@@ -64,9 +64,15 @@ public class PlotService {
 		return plotMapper.getPlot(id);
 	}
 
-	public boolean changeLeftSeats(int plotid) {
-		int leftSeats = plotMapper.getLeftSeats(plotid);
-		return plotMapper.changeLeftSeats(plotid,leftSeats-1);
+	/**
+	 * 剩余泊位变化
+	 * @param plotid
+	 * @param type 1加一，-1减一
+	 * @return
+	 */
+	public boolean changeLeftSeats(int plotid,int type) {
+//		int leftSeats = plotMapper.getLeftSeats(plotid);
+		return plotMapper.changeLeftSeats(plotid,type);
 		
 	}
 }

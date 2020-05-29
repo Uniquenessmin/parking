@@ -2,6 +2,7 @@ package com.xxm.parking.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class TimeUtil {
 
@@ -36,6 +37,32 @@ public class TimeUtil {
 		}
 		
 	}
+	
+	public static long dateToTime(String time1) {
+		 SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+		
+		 Date date = null;
+		try {
+			date = format.parse(time1);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+		 //日期转时间戳（毫秒）
+		 long time=date.getTime();
+		 return time;
+		
+	}
+	
+	public static String timeToDate(long time) {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		Date date = new Date(time);
+		//日期格式化
+		String  res = simpleDateFormat.format(date);
+		return res;
+	}
+	
 	
 //	public static void main(String[] args) {
 //		long time1 = 1590631847;

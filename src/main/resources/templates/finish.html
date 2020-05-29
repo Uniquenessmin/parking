@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>进行中的停车记录</title>
+    <title>finish</title>
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -72,21 +72,8 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="collapsibleNavId">
-                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="/myinfo">个人资料<span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href=""></a>
-                        </li>
-                        <!-- Button trigger modal 修改密码对话框 -->
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="modal" data-target="#modelId"></a>
-                        </li>
 
-                       
-                    </ul>
-                    <form class="form-inline my-2 my-lg-0" action="/">
+                    <form class="form-inline my-2 my-lg-0" action="/main">
 
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">退出</button>
                     </form>
@@ -96,35 +83,34 @@
 
         <!-- 主体功能栏 -->
         <div>
+            <el-alert title="请到达停车场出口再点击“出场”按钮！并且订单支付完成方可为您抬杆出场！" type="info">
+            </el-alert>
 
-
-            <h4 class="card-title">正在停车的信息...</h4>
-            <p class="card-text">停车场名字：{{plotName}}</p>
-            <p class="card-text">停车场地址：{{plotAddress}}</p>
-            <p class="card-text">泊位号：{{seatName}}</p>
-            <p class="card-text">开始时间：{{createtime}}</p>
-            <p class="card-text">已停车时间：{{parktime}}</p>
-            <p class="card-text">已产生费用：{{tempMoney}}元</p>
-            <a href="/leave" ><span icon="el-icon-link"></span>现在要离开停车场？点击这里</a>
+            <!-- 停车ing -->
+            <div style="margin: 20%;padding-left: 15%;padding-top: 15%;">
+                <h3>本次订单已完成！查看订单点击<a href="/my">我的订单</a></h3>
+            </div>
         </div>
         <!-- 底部功能栏 -->
         <div class="footer">
             <el-row>
-                <el-col :span="12" class="con">
-                    <el-badge :value="pvalue" class="item" type="primary">
+                <div class="footer">
+                    
+                    <el-col :span="12" class="con">
+
                         <span class="el-icon-place"></span>
-                    </el-badge>
-                    <div class="grid-content bg-purple" style="text-align: center;">在停</div>
-                </el-col>
-                <el-col :span="12" class="con">
-                    <span class="el-icon-user"></span>
-                    <div class="grid-content bg-purple-light">我的</div>
-                </el-col>
+
+                        <div class="grid-content bg-purple" style="text-align: center;">在停</div>
+                    </el-col>
+                    <el-col :span="12" class="con">
+                        <span class="el-icon-user"></span>
+                        <div class="grid-content bg-purple-light">我的</div>
+                    </el-col>
             </el-row>
 
 
         </div>
-    </div>
+    </div></div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -142,10 +128,6 @@
             el: '#app',
             data: {
 
-                oldpwd: '',
-                pwd1: '',
-                pwd2: '',
-                show: '',
                 ss: '',
                 name: '',
                 tel: '',
@@ -153,34 +135,20 @@
                 id: '',
                 value: '',
                 pnumber2: '',
-
+                activeNames: ['1'],
+                plots: {},
                 address1: '',
                 name1: '',
                 left: '',
-               
+                currentPage: 1,
+                total: 0,
+                pagesize: 10,
+                plist: {},
                 plotId: '',
-                uri: '',
-                pvalue: 0,
-                record: {},
-                createtime: '',
-                parktime: '',
-                plotName:'',
-                plotAddress:'',
-                seatName:'',
-                tempMoney:0,
+                orderid:0,
             },
             methods: {
-                //时间
-
-                timeChange: function (time) {
-                    Date.prototype.toLocaleString = function () {
-                        return this.getFullYear() + "年" + (this.getMonth() + 1) + "月" + this.getDate() + "日 " + this.getHours() + "点" + this.getMinutes() + "分" + this.getSeconds() + "秒";
-                    };
-                    var unixTimestamp = new Date(time);
-                    commonTime = unixTimestamp.toLocaleString();
-                    return commonTime;
-                },
-
+               
 
             },
             computed: {
@@ -198,39 +166,11 @@
                 this.id = id;
                 this.value = platenumber.substr(0, 2);
                 this.pnumber2 = platenumber.substr(2, 5);
+                this.orderid = localStorage.getItem("orderid");
+                
 
-                //正在进行的订单数
-                axios.post("/orderCount", {
-                    userid: this.id
-                })
-                    .then(res => {
-                        console.log(res.data);
-                        this.pvalue = res.data;
-                    });
-
-                //停车ing
-                console.log('/' + this.id + "/currentRecord");
-                axios.get('/' + this.id + '/currentRecord')
-                    .then(res => {
-                        console.log(res.data);
-                        this.record = res.data.record;
-                        var ctime = this.record.createtime;
-                        console.log(ctime);
-                       
-                        var unixTimestamp = new Date(ctime);
-                        console.log(unixTimestamp);
-                        commonTime = unixTimestamp.toLocaleString();
-                        this.createtime =  commonTime;
-                        console.log(this.createtime);
-                        this.parktime =res.data.parkTime ;
-                        
-                        this.plotName = this.record.plot.name;
-                        this.plotAddress = this.record.plot.address;
-                        this.seatName = this.record.seat.name;
-                        this.tempMoney = res.data.tempMoney;
-                    });
-            }
-        })       
+            },
+        })        
     </script>
 
 

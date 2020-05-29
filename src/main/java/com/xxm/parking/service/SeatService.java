@@ -46,9 +46,9 @@ public class SeatService {
 	 * @param seatid
 	 * @return
 	 */
-	public boolean changeSeatStatus(int seatid) {
+	public boolean changeSeatStatus(int seatid,int status) {
 		
-		return seatMapper.changeSeatStatus(seatid);
+		return seatMapper.changeSeatStatus(seatid,status);
 	}
 	/**
 	 * 车位列表

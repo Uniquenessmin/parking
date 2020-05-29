@@ -40,4 +40,8 @@ public interface RecordMapper {
 	// 修改停车记录信息
 	@Update("update record set seatid=#{seatid} where id=#{id}")
 	public int changeRecord(@Param("seatid") int seatid, @Param("id") int id);
+
+	// 修改出场的停车记录信息
+	@Update("update record set endtime=#{endtime},button=button+#{num} where userid=#{userid} and endtime=0")
+	public boolean changeEnd(@Param("userid")int userid, @Param("endtime")long endtime, @Param("num")int num);
 }
