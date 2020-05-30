@@ -1,7 +1,6 @@
 package com.xxm.parking.pojo;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import com.xxm.parking.util.TimeUtil;
 

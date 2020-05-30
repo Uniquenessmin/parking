@@ -153,7 +153,7 @@
 
 
         </div>
-    </div>
+    </div></div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -217,6 +217,7 @@
                                 console.log(res.data);
                                 localStorage.setItem("recordid", this.myOrder.recordid);
                                 localStorage.setItem("orderid", this.myOrder.id);
+                                localStorage.setItem("endtime", this.myOrder.endtime);
                                 //开门按钮uri
                                 if (res.data) {
                                     window.location.href = '/out';

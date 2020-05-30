@@ -34,8 +34,8 @@ public interface RecordMapper {
 	public Record getNowRecordByUserid(@Param("userid")int userid);
 
 	// 查看停车记录列表，支持模糊查询
-	@Select("select * from record #{wheresql}")
-	public List<Record> getRecordList(String wheresql);
+	@Select("select * from record where userid=#{userid} order by createtime desc")
+	public List<Record> getRecordList(@Param("userid")int userid);
 
 	// 修改停车记录信息
 	@Update("update record set seatid=#{seatid} where id=#{id}")

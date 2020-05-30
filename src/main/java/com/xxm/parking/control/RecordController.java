@@ -1,7 +1,7 @@
 package com.xxm.parking.control;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,5 +102,15 @@ public class RecordController {
 		//修改停车记录，endtime，button
 		long endtime = System.currentTimeMillis();
 		return recordService.changeEnd(userid,endtime,-1);
+	}
+	
+	/**
+	 * 停车场记录列表
+	 * @return
+	 */
+	@GetMapping("/myRecordList")
+	public List<Record> getMyRecord(@RequestParam("userid") int userid){
+		
+		return recordService.getRecordList(userid);
 	}
 }

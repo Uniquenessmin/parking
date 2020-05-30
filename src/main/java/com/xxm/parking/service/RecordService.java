@@ -1,6 +1,7 @@
 package com.xxm.parking.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.xxm.parking.mapper.RecordMapper;
 import com.xxm.parking.pojo.Order;
+import com.xxm.parking.pojo.Plot;
 import com.xxm.parking.pojo.Record;
+import com.xxm.parking.pojo.Seat;
 
 @Service
 public class RecordService {
@@ -18,6 +21,11 @@ public class RecordService {
 	
 	@Autowired
 	OrderService orderService;
+	
+	@Autowired
+	SeatService seatService;
+	@Autowired
+	PlotService plotService;
 		
 	public Map<String,Object> startParking(HashMap<String,Object> map){
 		long createtime = Long.valueOf(String.valueOf(map.get("createtime"))).longValue();
@@ -98,5 +106,25 @@ public class RecordService {
 	public Record getRecordById(int recordid) {
 		
 		return recordMapper.getRecordById(recordid);
+	}
+
+	/**
+	 * 查看停车记录列表
+	 * @param map
+	 * @return
+	 */
+	public List<Record> getRecordList(int userid ) {
+		
+		List<Record> list = recordMapper.getRecordList(userid);
+		for(Record r:list) {
+			
+			//设置泊位
+			Seat se = seatService.getSeat(r.getSeatid());
+			r.setSeat(se);
+			//设置停车场
+			Plot pl = plotService.getPlot(se.getParkingid());
+			r.setPlot(pl);			
+		}
+		return list;
 	}
 }

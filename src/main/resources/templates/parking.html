@@ -74,56 +74,8 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="collapsibleNavId">
-                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="/myinfo">个人资料<span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/info"></a>
-                        </li>
-                        <!-- Button trigger modal 修改密码对话框 -->
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="modal" data-target="#modelId">修改密码</a>
-                        </li>
-
-                        <!-- Modal -->
-                        <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
-                            aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">修改用户密码</h5>
-                                    </div>
-                                    <div class="modal-body">
-
-                                        <!-- 旧密码 -->
-                                        <div class="form-group">
-                                            <label for="">旧密码</label>
-                                            <input type="password" class="form-control" v-model="oldpwd">
-                                        </div>
-
-                                        <!-- 新密码 -->
-                                        <div class="form-group">
-                                            <label for="">新密码</label>
-                                            <input type="password" class="form-control" v-model="pwd1">
-                                        </div>
-
-                                        <!-- 再次输入 -->
-                                        <div class="form-group">
-                                            <label for="">再次输入</label>
-                                            <input type="password" class="form-control" v-model="pwd2">
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-                                        <button type="button" class="btn btn-primary" @click="change()">更改</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </ul>
-                    <form class="form-inline my-2 my-lg-0" action="/">
+                    
+                    <form class="form-inline my-2 my-lg-0" action="/main">
 
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">退出</button>
                     </form>
@@ -136,7 +88,9 @@
         </el-breadcrumb>
         <!-- 主体功能栏 -->
         <div>
-            欢迎进入停车服务页面，请选择停车场...
+                <el-alert title="  欢迎进入停车服务页面，请选择停车场..." type="info">
+                    </el-alert>
+          
             <!-- 停车场列表 -->
             <div v-loading="loading">
                 <el-collapse accordion v-model="activeNames" @change="handleChange"

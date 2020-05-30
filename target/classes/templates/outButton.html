@@ -100,7 +100,7 @@
         <div class="footer">
             <el-row>
                 <div class="footer">
-                    
+
                     <el-col :span="12" class="con">
 
                         <span class="el-icon-place"></span>
@@ -115,7 +115,7 @@
 
 
         </div>
-    </div></div>
+    </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -153,11 +153,13 @@
                 uri: '',
                 pvalue: 0,
                 buttonNUM: 0,
+                endtime: 0,
+                timeca: 0,
             },
             methods: {
                 buttonChance: function () {
                     //按钮可点击次数
-                    axios.get('/buttonCount?recordid='+localStorage.getItem("recordid"))
+                    axios.get('/buttonCount?recordid=' + localStorage.getItem("recordid"))
                         .then(res => {
                             console.log(res.data);
                             this.buttonNUM = res.data;
@@ -170,26 +172,26 @@
                 },
                 //弹框
                 open: function () {
-                    if ((this.pvalue == 0)&&(this.buttonNUM>0)) {
+                    if ((this.pvalue == 0) && (this.buttonNUM > 0) && this.timeca <= 300000) {
 
                         this.$confirm('开门按钮点击后将失效，请到达出口后再点击【出场】按钮', '提示', {
                             confirmButtonText: '已到出口，马上出场',
                             cancelButtonText: '离出口还差一段距离，稍后出场',
                             type: 'warning'
                         }).then(() => {
-                            axios.post('/'+this.id+'/end')
+                            axios.post('/' + this.id + '/end')
                                 .then(res => {
                                     console.log(res)
                                 })
                                 .catch(err => {
-                                    console.error(err); 
+                                    console.error(err);
                                 });
                             this.$message({
                                 type: 'success',
                                 message: '马上为您抬杆...',
-                               
+
                             });
-                            window.location.href="/finish";
+                            window.location.href = "/finish";
 
 
                         }).catch(() => {
@@ -198,7 +200,7 @@
                                 message: '已取消出场'
                             });
                         });
-                    }else{
+                    } else {
                         alert('出场按钮失效！');
                     }
                 },
@@ -220,7 +222,8 @@
                 this.value = platenumber.substr(0, 2);
                 this.pnumber2 = platenumber.substr(2, 5);
                 this.buttonChance();
-
+                this.endtime = localStorage.getItem('endtime');
+                this.timeca = new Date().getTime() - this.endtime;
             },
         })        
     </script>

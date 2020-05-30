@@ -119,4 +119,41 @@ public class PathController {
 	public String my() {
 		return "my";
 	}
+
+	// 设置页面
+	@RequestMapping("/settings")
+	public String settings() {
+		return "settings";
+	}
+
+	// 资讯页面
+	@RequestMapping("/news")
+	public String news() {
+		return "news";
+	}
+
+	// 资讯详情页面
+	@RequestMapping("/news/{id}")
+	public String newsInfo(@PathVariable("id") int id) {
+		return "newsInfo";
+	}
+
+	// 指南页面
+	@RequestMapping("/info")
+	public String toInfo() {
+		return "parkstudy";
+	}
+
+	// 使用教程页面
+	@RequestMapping("/how.html")
+	public String infoMessage() {
+		return "how.html";
+	}
+
+	//预约信息
+	@RequestMapping("/{id}/book")
+	public String bookMessage() {
+		return "bookinfo";
+	}
+	
 }

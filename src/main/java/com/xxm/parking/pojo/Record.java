@@ -23,10 +23,26 @@ public class Record {
 	private Seat seat;
 	private Plot plot;
 	private int button;
-	private String stayTime;//停留时长
-	
+	private String stayTime;// 停留时长
+	private String date1;
+	private String date2;
+
 	public String getStayTime() {
-		this.stayTime = TimeUtil.dateDiff(createtime, endtime, 1);
+		if(this.endtime!=0) {
+			this.stayTime = TimeUtil.dateDiff(createtime, endtime, 1);
+		}else {
+			this.stayTime = TimeUtil.dateDiff(createtime, System.currentTimeMillis(), 1);
+		}
+		
 		return this.stayTime;
+	}
+
+	public String getDate1() {
+		return TimeUtil.timeToDate(this.createtime);
+
+	}
+
+	public String getDate2() {
+		return TimeUtil.timeToDate(this.endtime);
 	}
 }

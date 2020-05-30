@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>进行中的停车记录</title>
+    <title>订单列表</title>
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -80,7 +80,11 @@
                 </div>
             </nav>
         </div>
-
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-top: 3%;margin-bottom: 3%;">
+                <el-breadcrumb-item><a href="/foruser">首页</a></el-breadcrumb-item>
+                <el-breadcrumb-item><a href="/my">我的</a></el-breadcrumb-item>
+                <el-breadcrumb-item>我的订单</el-breadcrumb-item>
+            </el-breadcrumb>
         <!-- 主体功能栏 -->
         <div>
             <table class="table">
@@ -96,7 +100,7 @@
                 <tbody>
                     <tr v-for="(i, k) in orders" :key="k">
                         <td scope="row">{{k+1}}</td>
-                        <td style="width: 30%">{{i.date2}}</td>
+                        <td style="width: 30%">{{i.status==1?'--':i.date2}}</td>
                         <td style="width: 30%">{{i.plot.name}}</td>
                         <td style="text-align: right">￥{{i.fee}}</td>
                         <td>
@@ -121,13 +125,13 @@
                                                 </div>
                                         <div class="modal-body">
                                             <p>开始时间：{{i.date1}}</p>
-                                    <p>结束时间：{{i.date2}}</p>
+                                    <p>结束时间：{{i.status==1?'--':i.date2}}</p>
                                             <p>停车场名字：{{i.plot.name}}</p>
                                             <p>地址：{{i.plot.address}}</p>
                                             <p>泊位号：{{i.seat.name}}</p>
-                                            <p>停车时长：{{i.record.stayTime}}</p>
+                                            <p>停车时长：{{i.status==1?'--':i.record.stayTime}}</p>
                                             <p>支付金额：￥{{i.fee}}</p>
-                                            <p>支付方式：{{i.paytype==1?'微信':'支付宝'}}</p>
+                                            <p>支付方式：{{i.status==1?'--':(i.paytype==1?'微信':'支付宝')}}</p>
                                             <p>订单状态：{{i.status==1?'进行中':'已完成'}}</p>
                                         </div>
                                         <div class="modal-footer">
@@ -162,7 +166,7 @@
                 </el-col>
                 <el-col :span="12" class="con">
                     <span class="el-icon-user"></span>
-                    <div class="grid-content bg-purple-light">我的</div>
+                    <div class="grid-content bg-purple-light"><a href="/my">我的</a></div>
                 </el-col>
             </el-row>
 
