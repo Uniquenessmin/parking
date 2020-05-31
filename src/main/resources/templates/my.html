@@ -99,6 +99,12 @@
                     <a href="myRecord">我的停车记录</a>
                 </div>
             </el-card>
+            <el-card v-if="bookCount>0" class="box-card">
+                    <div class="text item">
+    
+                        <a :href="'/'+id+'/book'">我的预约</a>
+                    </div>
+                </el-card>
         </div>
         <!-- 底部功能栏 -->
         <div class="footer">
@@ -165,6 +171,7 @@
                 plotId: '',
                 uri: '',
                 pvalue: 0,
+                bookCount:0,
             },
             methods: {
                 //弹框
@@ -294,7 +301,13 @@
                     })
                     .catch(err => {
                         console.error(err);
-                    })
+                    });
+                //预约数量
+                axios.get("/" + this.id + "/bookCount")
+                        .then(res => {
+                            console.log(res.data);
+                            this.bookCount = res.data;
+                        });
 
             },
         })        

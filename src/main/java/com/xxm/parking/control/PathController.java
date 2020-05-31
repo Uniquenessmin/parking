@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.xxm.parking.pojo.Record;
+import com.xxm.parking.service.BSeatService;
 import com.xxm.parking.service.OrderService;
 import com.xxm.parking.service.RecordService;
 
@@ -17,6 +18,8 @@ public class PathController {
 	OrderService orderService;
 	@Autowired
 	RecordService recordService;
+	@Autowired
+	BSeatService bseatService;
 
 	@RequestMapping("/main")
 	public String firstPage() {
@@ -155,5 +158,24 @@ public class PathController {
 	public String bookMessage() {
 		return "bookinfo";
 	}
+	
+	//预约--进场
+	@RequestMapping("/bookIn")
+	public String bookIN() {
+		return "bookin";
+	}
+	
+	//取消预约
+	@RequestMapping("/cancelBook/{id}")
+	public String cancelBook(@PathVariable("id")int bseatid) {
+		System.out.println(bseatid);
+		boolean f = bseatService.cancel(bseatid);
+		System.out.println(f);
+		if(f)
+			return "foruser";
+		else
+			return "bookinfo";
+	}
+	
 	
 }

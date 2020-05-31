@@ -97,7 +97,8 @@
             <p class="card-text">停车场地址：{{plot.address}}</p>
             <p class="card-text">泊位号：{{seat.name}}</p>
             <p class="card-text">预约时间：{{bseat.date}}</p>
-            
+            <a :href="'/cancelBook/'+bseat.id"><button>取消预约</button></a>
+            <br/>
             <a href="/bookIn"><span icon="el-icon-link"></span>已经抵达停车场？立刻进入停车场，点击这里</a>
         </div>
         <!-- 底部功能栏 -->
@@ -200,8 +201,15 @@
                     .then(res => {
                         console.log(res.data);
                         this.bseat = res.data.bseat;
+                        console.log(this.bseat.id);
+                        console.log(this.bseat);
+                        
                        this.seat = res.data.seat;
+                       console.log(this.seat.id);
+                       console.log("seatid:"+this.bseat.seatid);
                        this.plot = res.data.plot;
+                       localStorage.setItem('bseatid',this.bseat.id);
+                       localStorage.setItem('seatid',this.seat.id);
                     });
             }
         })       

@@ -27,12 +27,13 @@ public class RecordService {
 	@Autowired
 	PlotService plotService;
 		
-	public Map<String,Object> startParking(HashMap<String,Object> map){
+	public Map<String,Object> startParking(HashMap<String,Object> map,int seatid){
 		long createtime = Long.valueOf(String.valueOf(map.get("createtime"))).longValue();
 
 		int userid = Integer.valueOf((String) map.get("userid"));
+		
 		Map<String,Object> out = new HashMap<>();
-		boolean isOk = recordMapper.createRecord(0, createtime, userid);
+		boolean isOk = recordMapper.createRecord(seatid, createtime, userid);
 		Record r = recordMapper.getNowRecordByUserid(userid);
 		//订单计费
 		Order order = new Order();

@@ -1,5 +1,6 @@
 package com.xxm.parking.mapper;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -19,5 +20,11 @@ public interface BSeatMapper {
 
 	@Select("select * from bookseat where userid=#{userid}")
 	BSeat getBook(@Param("userid")int userid);
+
+	@Delete("delete from bookseat where id = #{id}")
+	boolean cancel(@Param("id")int id);
+
+	@Select("select * from bookseat where id=#{id}")
+	BSeat getBookById(@Param("id")int id);
 
 }

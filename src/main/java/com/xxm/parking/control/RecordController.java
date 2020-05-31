@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.xxm.parking.pojo.Plot;
 import com.xxm.parking.pojo.Record;
 import com.xxm.parking.pojo.Seat;
+import com.xxm.parking.service.BSeatService;
 import com.xxm.parking.service.PlotService;
 import com.xxm.parking.service.RecordService;
 import com.xxm.parking.service.SeatService;
@@ -31,15 +32,17 @@ public class RecordController {
 	SeatService seatService;
 	@Autowired
 	PlotService plotService;
+	@Autowired
+	BSeatService bseatService;
 
 	/**
-	 * 
+	 * 进场
 	 * @param inMap
 	 * @return
 	 */
 	@PostMapping("/start")
 	public Map<String, Object> beginParking(@RequestBody HashMap<String, Object> inMap) {
-		Map<String, Object> map = recordService.startParking(inMap);
+		Map<String, Object> map = recordService.startParking(inMap,0);
 		return map;
 	}
 
@@ -112,5 +115,22 @@ public class RecordController {
 	public List<Record> getMyRecord(@RequestParam("userid") int userid){
 		
 		return recordService.getRecordList(userid);
+	}
+	
+	
+	/**
+	 * 预约--进场
+	 * @param inMap
+	 * @return
+	 */
+	@PostMapping("/startforbook")
+	public Map<String, Object> beginParkingforBook(@RequestBody HashMap<String, Object> inMap) {
+	
+		int seatid = Integer.parseInt((String)inMap.get("seatid"));		
+		Map<String, Object> map = recordService.startParking(inMap,seatid);
+		int id = Integer.parseInt((String)inMap.get("id"));
+		//去除预约条目
+		bseatService.cancel(id);
+		return map;
 	}
 }
