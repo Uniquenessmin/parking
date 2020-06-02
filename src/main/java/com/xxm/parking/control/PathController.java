@@ -72,7 +72,7 @@ public class PathController {
 	public String toRecord(@RequestParam("userid") int id) {
 		System.out.println("toRecord...userid:" + id);
 		Record r = recordService.nowRecord(id);
-
+		System.out.println(r.toString());
 		if (r.getSeatid() == 0) {
 			return "seat";
 		} else {

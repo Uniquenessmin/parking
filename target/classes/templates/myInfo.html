@@ -67,7 +67,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="form-group">
-                    <div class="row py-3 ">
+                    <div class="row py-1 ">
                         <div class="col-lg-4 offset-lg-1 col-md-7  col-sm-12">
                             <label for="">昵称</label>
                             <div class="form-group">
@@ -77,7 +77,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row py-3 ">
+                    <div class="row  ">
                         <div class="col-lg-4 offset-lg-1 col-md-7  col-sm-12">
                             <label for="">手机号码</label>
                             <div class="form-group">
@@ -87,7 +87,7 @@
                         </div>
                     </div>
 
-                    <div class="row py-3">
+                    <div class="row py-1">
                         <div class="col-lg-2 offset-lg-1 col-md-2  col-sm-4">
                             <label for="">地区</label>
                             <div class="form-group ">
@@ -102,7 +102,7 @@
                             <label for="">车牌号</label>
                             <div class="form-group flex-box">
                                 <input type="text" minlength="5" maxlength="5" class="form-control" v-model="pnumber2"
-                                    placeholder="5位车牌号" required @blur="upnum(platenumber2)" @focus="flag = false">
+                                    placeholder="5位车牌号" required @blur="upnum(pnumber2)" @focus="flag = false">
                                 <div style="color: red;" v-if="flag">请输入正确的车牌号</div>
                             </div>
                         </div>
@@ -149,6 +149,7 @@
                 name: '',
                 tel: '',
                 platenumber: '',
+                platenumber2: '',
                 id: '',
                 value: '',
                 pnumber2: '',
@@ -1215,7 +1216,7 @@
             methods: {
                 upnum(str) {
                     let reg = /^[A-Z\d]{5}$/
-                    if (!reg.test(str) && this.platenumber2) {
+                    if (!reg.test(str) && this.pnumber2) {
                         this.flag = true
                     }
                     else {
@@ -1249,6 +1250,9 @@
                         })
                 },
                 changeInfo: function () {
+                    if(!this.flag&&this.tel.length==11){
+                        
+                    
                     this.platenumber = this.value + this.pnumber2;
                     axios.post('/changeinfo', {
                         id: this.id,
@@ -1269,7 +1273,9 @@
                         })
                         .catch(err => {
                             console.error(err);
-                        })
+                        });}else{
+                                alert('手机号码或者车牌格式不对')
+                        }
                 },
                 saveStorage: function () {
                     localStorage.setItem("name", this.name);

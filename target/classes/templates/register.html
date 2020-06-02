@@ -245,9 +245,9 @@
     <div class="wrap" id="app">
         <div class="container">
             <h1 class="offset-lg-2" style="color: white;  ">Sign up</h1>
-            <div class="container-fluid my-5 py-1 text-light">
+            <div class="container-fluid py-1 text-light">
 
-                <div class="row py-3 ">
+                <div class="row ">
                     <div class="col-lg-4 offset-lg-1 col-md-7  col-sm-12">
                         <label for="">昵称</label>
                         <div class="form-group">
@@ -257,7 +257,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row py-3 ">
+                <div class="row py-1 ">
                     <div class="col-lg-4 offset-lg-1 col-md-7  col-sm-12">
                         <label for="">手机号码</label>
                         <div class="form-group">
@@ -267,7 +267,7 @@
                     </div>
                 </div>
 
-                <div class="row py-3">
+                <div class="row py-1">
                     <div class="col-lg-4 offset-lg-1 col-md-7  col-sm-12">
                         <label for="">密码</label>
                         <div class="form-group ">
@@ -276,7 +276,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row py-3">
+                <div class="row ">
                     <div class="col-lg-2 offset-lg-1 col-md-2  col-sm-4">
                         <label for="">地区</label>
                         <div class="form-group ">
@@ -287,7 +287,7 @@
                             </el-select>
                         </div>
                     </div>
-                    <div class="col-lg-2  col-md-5  col-sm-8">
+                    <div class="col-lg-2  col-md-2  col-sm-4">
                         <label for="">车牌号</label>
                         <div class="form-group flex-box">
                             <input type="text" minlength="5" maxlength="5" class="form-control" v-model="platenumber2" 
@@ -297,14 +297,14 @@
                     </div>
                 </div>
 
-                <div class="row py-3">
+                <div class="row py-1">
                     <div class="col-lg-4 offset-lg-1 col-md-4  col-sm-12">
                         <button @click='createUser' class="btn btn-success btn-block">注册</button>
                     </div>
 
                 </div>
                 <div class="row" style="color:red">{{msg}}</div>
-                   <p class="row py-3 offset-lg-1">
+                   <p class="row  offset-lg-1">
                       <span class="text">Already a member ?</span>
                         <a href="main" class="to_login"> Go and log in </a>
                 </p>
@@ -1426,7 +1426,9 @@
                         this.msg = "请检查信息是否漏填！";
                     } else {
                         this.platenumber = this.value + this.platenumber2;
-
+                        if(this.tel.length<11){
+                            alert('请输入11位号码')
+                        }else
                         axios.post('/register', {
                             name: this.name,
                             tel: this.tel,
