@@ -75,4 +75,8 @@ public class PlotService {
 		return plotMapper.changeLeftSeats(plotid,type);
 		
 	}
+
+	public boolean delete(int id) {
+		return plotMapper.delete(id);
+	}
 }

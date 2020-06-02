@@ -2,6 +2,7 @@ package com.xxm.parking.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -29,5 +30,9 @@ public interface PlotMapper {
 	// 查看剩余泊位
 	@Select("select leftparkinglot from parkings where id = #{id}")
 	public int getLeftSeats(@Param("id") int id);
+
+	//删除
+	@Delete("delete from parkings where id = #{id}")
+	public boolean delete(@Param("id")int id);
 
 }

@@ -59,4 +59,9 @@ public class SeatService {
 		// TODO Auto-generated method stub
 		return seatMapper.getSeatList(plotId);
 	}
+
+	public List<Seat> getSeatList2() {
+		// TODO Auto-generated method stub
+		return seatMapper.getSeatList2();
+	}
 }

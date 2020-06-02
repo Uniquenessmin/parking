@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>停车场管理</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+   <!--引入 element-ui 的样式，-->
+   <link rel="stylesheet" href="http://localhost:9005/JS/element/index.css">
+   <!-- 必须先引入vue，  后使用element-ui -->
+   <script src="http://localhost:9005/JS/vue/vue.js"></script>
+   <!-- 引入element 的组件库-->
+   <script src="http://localhost:9005/JS/element/index.js"></script>
+
+   <!-- axios -->
+   <script src="http://localhost:9005/JS/axios/axios.min.js"></script>
+
+   <!-- jquery -->
+   <script src="http://localhost:9005/JS/jq/jquery-3.3.1.min.js"></script>
+
+    <style>
+        .footer {
+            position: fixed;
+            left: 0px;
+            bottom: 0px;
+            width: 100%;
+            height: 10%;
+            background-color: #eee;
+            z-index: 9999;
+        }
+
+        .con {
+            position: unset;
+            width: 50%;
+            height: 100%;
+            color: slategrey;
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        .cen {
+            position: unset;
+            width: 400px;
+            height: 500px;
+            text-align: center;
+            font-size: 1.4em;
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app">
+        <!-- Nav tabs 导航栏-->
+        <div>
+
+            <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+                <a class="navbar-brand " href="/manager">智能停车管理平台</a>
+                <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse"
+                    data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavId">
+                        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                                <li class="nav-item active">
+                                    <a class="nav-link" href=""></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href=""></a>
+                                </li>
+                               
+                          
+                    </ul>
+                    <form class="form-inline my-2 my-lg-0" action="/main">
+
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">退出</button>
+                    </form>
+                </div>
+            </nav>
+        </div>
+
+        <!-- 主体功能栏 -->
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4-12">
+
+                </div>
+                <div class="col-lg-8-12">
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>序</th>
+                                <th>停车场id</th>
+                                <th>名称</th>
+                                <th>状态</th>
+                                
+                                <th>操作</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(i, k) in plots.slice((currentPage-1)*pagesize,currentPage*pagesize)" :key="k">
+                                <td scope="row">{{k+1}}</td>
+                                <td>{{i.parkingid}}</td>
+                                <td >{{i.name}}</td>
+                                <td>{{i.status}}</td>
+                                
+
+                                <td>
+                                    <button class="btn btn-danger btn-sm"  @click="deleteSeat(i.id)"  type="button">
+                                       删除
+
+                                    </button>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    <!-- 分页 -->
+                    <div class="block">
+
+                        <el-pagination @current-change="handleCurrentChange" :current-page="currentPage"
+                            :page-size="pagesize" layout="total,  prev, pager, next,jumper" :total="total">
+                        </el-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div></div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+
+                name: '',
+                tel: '',
+                platenumber: '',
+                id: '',
+                value: '',
+                pnumber2: '',
+
+                address1: '',
+                name1: '',
+                left: '',
+                plotId: '',
+                uri: '',
+
+                plots: {},
+                currentPage: 1,
+                total: 0,
+                pagesize: 5,
+                total: 0,
+            },
+            methods: {
+                deleteSeat: function (pid) {
+                    console.log('delete...');
+                    // axios.post("/deletePlot?id=" + pid)
+                    //     .then(res => {
+                    //         console.log(res.data);
+                    //         axios.post('/getPlot', {
+                    //             name: '',
+                    //             left: '',
+                    //             address: ''
+                    //         })
+                    //             .then(res => {
+                    //                 console.log(res.data)
+                    //                 this.plots = res.data;
+                    //                 this.total = this.plots.length;
+                    //                 this.currentPage =1;
+
+                    //             })
+                    //             .catch(err => {
+                    //                 console.error(err);
+                    //             });
+
+
+                    //     }).catch(err => {
+                    //         console.error(err);
+                    //     });
+                },
+                // 分页
+                handleSizeChange(val) {
+                    console.log(`每页 ${val} 条`);
+                },
+                handleCurrentChange(val) {
+                    console.log(`当前页: ${val}`);
+                    this.currentPage = val;
+
+                },
+            },
+            computed: {
+
+            },
+            mounted() {
+
+                var name = localStorage.getItem("name");
+                var tel = localStorage.getItem("tel");
+                var platenumber = localStorage.getItem("platenumber");
+                var id = localStorage.getItem("id");
+                this.tel = tel;
+                this.name = name;
+                this.platenumber = platenumber;
+                this.id = id;
+
+                axios.post('/getSeats', {
+                    
+                })
+                    .then(res => {
+                        console.log(res.data)
+                        this.plots = res.data;
+                        this.total = this.plots.length;
+
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    });
+
+            }
+        })       
+    </script>
+
+
+</body>
+
+</html>

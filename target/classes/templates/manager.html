@@ -1,11 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>后台管理</title>
+    
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+   
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+   
+   <!--引入 element-ui 的样式，-->
+   <link rel="stylesheet" href="http://localhost:9005/JS/element/index.css">
+   <!-- 必须先引入vue，  后使用element-ui -->
+   <script src="http://localhost:9005/JS/vue/vue.js"></script>
+   <!-- 引入element 的组件库-->
+   <script src="http://localhost:9005/JS/element/index.js"></script>
+
+   <!-- axios -->
+   <script src="http://localhost:9005/JS/axios/axios.min.js"></script>
+
+   <!-- jquery -->
+   <script src="http://localhost:9005/JS/jq/jquery-3.3.1.min.js"></script>
+
+    <style>
+        .footer {
+            position: fixed;
+            left: 0px;
+            bottom: 0px;
+            width: 100%;
+            height: 10%;
+            background-color: #eee;
+            z-index: 9999;
+        }
+
+        .con {
+            position: unset;
+            color: slategrey;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        .cen {
+            position: unset;
+            width: 400px;
+            height: 500px;      
+            text-align: center;
+            font-size: 1.4em;
+                        
+        }
+        .image {
+            width: 75px;
+            height: 75px;
+        }
+
+    </style>
 </head>
+
 <body>
-    管理员登录
+
+    <div id="app">
+        <!-- Nav tabs 导航栏-->
+        <div>
+
+            <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+              <span style="padding-left: 5%"></span>  <a class="navbar-brand " href="/manager">智能停车管理平台</a>
+                <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse"
+                    data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavId" style="margin-right:0%;padding-right: 0">
+                       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                        <li class="nav-item active">
+                            <a class="nav-link" href=""></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href=""></a>
+                        </li>
+                       
+                  
+            </ul>
+                    <form class="form-inline my-2 my-lg-0" method="post" action="/main">
+    
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">退出</button>
+                    </form>
+                </div>
+            </nav>
+        </div>
+        <!-- 主体功能栏 -->
+        <div>
+            <div style="margin: 5%;"></div>
+            <div class="container" >
+                
+                <div  class="row py-10">
+                    <div class="col-xs-1-12 con" style="margin: 2%;margin-left:10%;padding-left: 8%;">
+                            <a href="/mplot"><img src="IMG/m/plot.jpg" alt="..." class="round-sm image">
+                            <div>停车场管理</div></a>
+                    </div>
+                    <div class="col-xs-1-12 con" style="margin: 2%;">
+                           <a href="/mseat"><img src="IMG/m/seat.jpg" alt="..." class="round-sm image"><div>泊位管理</div></a>
+                    </div>
+                    <div class="col-xs-1-12 con" style="margin: 2%;">
+                            <a href="/mrecord"><img src="IMG/m/record.jpg" alt="..." class="round-sm image">
+                            <div>停车记录管理</div></a>
+                    </div>
+                    <div class="col-xs-1-12 con" style="margin: 2%;">
+                            <a href="/mrecord"><img src="IMG/m/order.jpg" alt="..." class="round-sm image"><div>订单管理</div>
+                            </a>
+                            </div>                    
+                </div>
+                <div  class="row py-10">
+                        <div class="col-xs-1-12 con" style="margin: 2%;margin-left:10%;padding-left: 8%;">
+                                <a href="/mrecord">  <img src="IMG/m/news.jpg" alt="..." class="round-sm image">
+                                <div>资讯管理</div></a>
+                        </div>
+                        <div class="col-xs-1-12 con" style="margin: 2%;">
+                                <a href="/mrecord"><img src="IMG/m/info.jpg" alt="..." class="round-sm image"><div>停车指南管理</div>
+                        </a></div>
+                        <div class="col-xs-1-12 con" style="margin: 2%;">
+                             <a href="/managerInfo"><img src="IMG/m/myinfo.jpg" alt="..." class="round-sm image"><div>个人资料</div></a>   
+                        </div>
+                                            
+                    </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                flag: false,
+                oldpwd: '',
+                pwd1: '',
+                pwd2: '',
+                show: '',
+                ss: '',
+                name: '',
+                tel: '',
+                platenumber: '',
+                id: 0,
+                value: '',
+                pnumber2: '',
+                pvalue:0,
+            },
+            methods: {
+                recordUrl:function(){
+                    return "/record?userid="+this.id;
+                },
+                change: function () {
+                    if(this.pwd1 != this.pwd2){
+                        alert('新密码两次输入不一致');
+                    }else{
+                        axios.post('/changpwd', {
+                            id:this.id,
+                            oldpasswd: this.oldpwd,
+                            newpasswd: this.pwd1,
+                            
+                        })
+                            .then(res => {
+                                console.log(res.data)
+                                if (res.data.state == 2) {
+                                    alert(res.data.msg);
+                                }else{
+                                    alert(res.data.msg);
+                                    $('#modelId').modal('hide')
+                                }
+                            })
+                            .catch(err => {
+                                console.error(err);
+                            });
+
+                    }
+                },
+
+            },
+            computed: {
+
+            },
+            mounted() {
+
+                var name = localStorage.getItem("name");
+                var tel = localStorage.getItem("tel");
+                var platenumber = localStorage.getItem("platenumber");
+                var id = localStorage.getItem("id");
+                this.tel = tel;
+                this.name = name;
+                this.platenumber = platenumber;
+                this.id = id;
+                console.log(this.id);
+                this.value = platenumber.substr(0, 2);
+                this.pnumber2 = platenumber.substr(2, 5);
+               
+            },
+        })        
+    </script>
+
+
 </body>
+
 </html>

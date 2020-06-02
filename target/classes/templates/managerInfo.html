@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>个人资料</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!--引入 element-ui 的样式，-->
+    <link rel="stylesheet" href="JS/element/index.css">
+    <!-- 必须先引入vue，  后使用element-ui -->
+    <script src="JS/vue/vue.js"></script>
+    <!-- 引入element 的组件库-->
+    <script src="JS/element/index.js"></script>
+
+    <!-- axios -->
+    <script src="JS/axios/axios.min.js"></script>
+
+    <!-- jquery -->
+    <script src="JS/jq/jquery-3.3.1.min.js"></script>
+
+    <style>
+        .jum {
+            background-color: #43CD80;
+            color: black;
+        }
+
+        .img {
+            width: 130px;
+            height: 142px;
+        }
+        .con {
+            position: unset;
+            color: slategrey;
+            text-align:end;
+            font-size: 1.2em;
+            padding-left: 6%;
+            padding-right: 10%;
+            
+        }
+
+        .item{
+            padding-bottom: 0px;
+        }
+        hr{
+            width: 40%;
+            margin-left: 6%;
+            margin-top: 0%;
+            padding-left: 6%;
+            margin-right: 20%;
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+    <div id="app">
+        <!-- Nav tabs 导航栏-->
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+                <span style="padding-left: 5%"></span>  <a class="navbar-brand " href="/manager">智能停车管理平台</a>
+                  <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse"
+                      data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
+                      aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="collapsibleNavId" style="margin-right:0%;padding-right: 0">
+                         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                          <li class="nav-item active">
+                              <a class="nav-link" href=""></a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" href=""></a>
+                          </li>
+                         
+                    
+              </ul>
+                      <form class="form-inline my-2 my-lg-0" method="post" action="/main">
+      
+                          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">退出</button>
+                      </form>
+                  </div>
+              </nav>
+        <nav aria-label="breadcrumb offset-lg-1" style=" margin-bottom: 0%;">
+                <ol class="breadcrumb con" style="background-color:white;">
+                  <li class="breadcrumb-item item"  ><a href="/manager" style="color: black">首页</a></li>
+                  <li class="breadcrumb-item active" aria-current="page" >个人资料</li>
+                </ol>
+             <hr>
+        </nav>
+        <!-- 个人信息表单 -->
+        
+        <div class="card" style="border: none">
+          
+            <div class="card-body">
+                <div class="form-group">
+                        <div class="row py-1 ">
+                                <div class="col-lg-2 offset-lg-1 col-md-7  col-sm-12">
+                                  个人资料
+                                </div>
+                                <div class="col-lg-2 offset-lg-1 col-md-7  col-sm-12">
+                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                        data-target="#myModal">修改密码</button>
+                                    </div> <!-- Modal -->
+                                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+                                        aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">修改用户密码</h5>
+                                                </div>
+                                                <div class="modal-body">
+                    
+                                                    <!-- 旧密码 -->
+                                                    <div class="form-group">
+                                                        <label for="">旧密码</label>
+                                                        <input type="password" class="form-control" v-model="oldpwd">
+                                                    </div>
+                    
+                                                    <!-- 新密码 -->
+                                                    <div class="form-group">
+                                                        <label for="">新密码</label>
+                                                        <input type="password" class="form-control" v-model="pwd1">
+                                                    </div>
+                    
+                                                    <!-- 再次输入 -->
+                                                    <div class="form-group">
+                                                        <label for="">再次输入</label>
+                                                        <input type="password" class="form-control" v-model="pwd2">
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                                                    <button type="button" class="btn btn-primary" @click="change()">更改</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                       
+                    <div class="row py-1 ">
+                        <div class="col-lg-4 offset-lg-1 col-md-7  col-sm-12">
+                            <label for="">昵称</label>
+                            <div class="form-group">
+                                <input type="text" maxlength="10" minlength="1" class="form-control" v-model="name"
+                                    placeholder="只能是中文、字母、数字"
+                                    oninput="value=value.replace(/[^\u4e00-\u9fa5_a-zA-Z0-9]{1,10}/g,'')" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row  ">
+                        <div class="col-lg-4 offset-lg-1 col-md-7  col-sm-12">
+                            <label for="">手机号码</label>
+                            <div class="form-group">
+                                <input type="text" maxlength="11" minlength="11" class="form-control" v-model="tel"
+                                    placeholder="请输入11位手机号码" oninput="value=value.replace(/[^\d]/g,'')" />
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row py-3">
+                        <!-- 提交按钮 -->
+                        <div class="col-lg-2 col-md-5 col-sm-12 offset-lg-1 my-3">
+                            <button @click="changeInfo()" class="btn btn-success btn-lg btn-block">提交</button>
+                        </div>
+
+                        <!-- 重置按钮 -->
+                        <div class="col-lg-2 col-md-5 col-sm-12 my-3">
+                            <button @click="reflesh()" class="btn btn-danger btn-lg btn-block">重置</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+       
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                flag: false,
+                oldpwd: '',
+                pwd1: '',
+                pwd2: '',
+                show: '',
+                ss: '',
+                name: '',
+                tel: '',
+                platenumber: '',
+                platenumber2: '',
+                id: '',
+                value: '',
+                pnumber2: '',
+            },
+            methods: {
+               
+                change: function () {
+                    if (this.pwd1 != this.pwd2) {
+                        alert('新密码两次输入不一致');
+                    } else {
+                        axios.post('/changpwd', {
+                            id: this.id,
+                            oldpasswd: this.oldpwd,
+                            newpasswd: this.pwd1,
+
+                        })
+                            .then(res => {
+                                console.log(res.data)
+                                if (res.data.state == 2) {
+                                    alert(res.data.msg);
+                                } else {
+                                    alert(res.data.msg);
+                                    $('#myModal').modal('hide')
+                                }
+                            })
+                            .catch(err => {
+                                console.error(err);
+                            });
+
+                    }
+                },
+                changeInfo: function () {
+                   
+                    axios.post('/changeinfo', {
+                        id: this.id,
+                        name: this.name,
+                        tel: this.tel,
+                        platenumber: this.platenumber
+                    })
+                        .then(res => {
+                            console.log(res.data)
+                            if (res.data.state == 2) {
+                                alert(res.data.msg);
+                            } else {
+                                this.saveStorage();
+                                location.reload()
+                            }
+
+
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        });
+                },
+                saveStorage: function () {
+                    localStorage.setItem("name", this.name);
+                    localStorage.setItem("tel", this.tel);
+                    localStorage.setItem("platenumber", this.platenumber);
+
+                },
+                reflesh: function () {
+                    location.reload()
+                }
+            },
+            computed: {
+
+            },
+            mounted() {
+
+                var name = localStorage.getItem("name");
+                var tel = localStorage.getItem("tel");
+                var platenumber = localStorage.getItem("platenumber");
+                var id = localStorage.getItem("id");
+                this.tel = tel;
+                this.name = name;
+                this.platenumber = platenumber;
+                this.id = id;
+                
+
+            },
+        })        
+    </script>
+
+
+</body>
+
+</html>

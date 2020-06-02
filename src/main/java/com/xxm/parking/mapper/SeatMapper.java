@@ -35,4 +35,7 @@ public interface SeatMapper {
 	//修改泊位状态
 	@Update("update seat set status=#{status} where id = #{seatid}")
 	public boolean changeSeatStatus(@Param("seatid")int seatid,@Param("status")int status);
+
+	@Select("select * from seat ")
+	public List<Seat> getSeatList2();
 }

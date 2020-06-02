@@ -177,5 +177,23 @@ public class PathController {
 			return "bookinfo";
 	}
 	
+	@RequestMapping("/managerInfo")
+	public String managerInfo() {
+		return "managerInfo";
+	}
 	
+	@RequestMapping("/mplot")
+	public String managerPlot() {
+		return "mplot";
+	}
+	
+	@RequestMapping("/mrecord")
+	public String mrecord() {
+		return "mrecord";
+	}
+	
+	@RequestMapping("/mseat")
+	public String mseat() {
+		return "mseat";
+	}
 }

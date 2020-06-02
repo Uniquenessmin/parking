@@ -78,4 +78,16 @@ public class SeatController {
 		seats = seatService.getSeatList(plotId);
 		return seats;
 	}
+	
+	/**
+	 * 车位列表
+	 * @param plotId
+	 * @return
+	 */
+	@PostMapping("/getSeats")
+	public List<Seat> getSeats2(){
+		List<Seat> seats = new ArrayList<>();
+		seats = seatService.getSeatList2();
+		return seats;
+	}
 }
